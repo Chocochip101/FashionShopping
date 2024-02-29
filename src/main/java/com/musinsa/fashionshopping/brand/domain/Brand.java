@@ -1,6 +1,7 @@
 package com.musinsa.fashionshopping.brand.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,11 +19,12 @@ public class Brand {
     @Column(name = "brand_id")
     private Long id;
 
-    private String name;
+    @Embedded
+    private BrandName brandName;
 
     @Builder
-    public Brand(final Long id, final String name) {
+    public Brand(final Long id, final BrandName brandName) {
         this.id = id;
-        this.name = name;
+        this.brandName = brandName;
     }
 }

@@ -1,11 +1,10 @@
 package com.musinsa.fashionshopping.brand.controller;
 
-import com.musinsa.fashionshopping.brand.service.BrandService;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
-import com.musinsa.fashionshopping.brand.controller.dto.NewBrandResponse;
-import java.net.URI;
+import com.musinsa.fashionshopping.brand.service.BrandService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +18,8 @@ public class BrandController {
     private final BrandService brandService;
 
     @PostMapping
-    public ResponseEntity<NewBrandResponse> createBrand(@Valid @RequestBody NewBrandRequest newBrandRequest) {
-        NewBrandResponse brand = brandService.createBrand(newBrandRequest);
-        return ResponseEntity.created(URI.create("/brands/" + brand.getId())).build();
+    public ResponseEntity<Void> createBrand(@Valid @RequestBody NewBrandRequest newBrandRequest) {
+        brandService.createBrand(newBrandRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

@@ -1,7 +1,6 @@
 package com.musinsa.fashionshopping.brand.domain;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,11 +16,11 @@ class BrandTest {
         //when
         Brand nike = Brand.builder()
                 .id(id)
-                .name(name)
+                .brandName(new BrandName(name))
                 .build();
 
         //then
         assertThat(nike.getId()).isEqualTo(id);
-        assertThat(nike.getName()).isEqualTo(name);
+        assertThat(nike.getBrandName().getValue()).isEqualTo(name);
     }
 }
