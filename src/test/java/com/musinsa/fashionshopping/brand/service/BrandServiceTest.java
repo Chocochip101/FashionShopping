@@ -5,6 +5,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.domain.Brand;
+import com.musinsa.fashionshopping.brand.domain.BrandName;
+import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.InvalidBrandNameException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import java.util.List;
@@ -55,5 +57,23 @@ class BrandServiceTest {
         //when & then
         assertThatThrownBy(() -> brandService.createBrand(newBrandRequest))
                 .isInstanceOf(InvalidBrandNameException.class);
+    }
+
+    @DisplayName("중복된 브랜드 이름 등록 시 예외가 발생한다.")
+    @Test
+    void createBrandName_Exception_Duplicated() {
+        //given
+        String brandName = "nike";
+        Brand brand = Brand.builder()
+                .brandName(new BrandName(brandName))
+                .build();
+        brandRepository.save(brand);
+
+        //when
+        NewBrandRequest newBrandRequest = new NewBrandRequest(brandName);
+
+        //then
+        assertThatThrownBy(() -> brandService.createBrand(newBrandRequest))
+                .isInstanceOf(DuplicateBrandNameException.class);
     }
 }

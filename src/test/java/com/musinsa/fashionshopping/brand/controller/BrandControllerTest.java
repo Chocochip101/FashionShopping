@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
+import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.InvalidBrandNameException;
 import com.musinsa.fashionshopping.brand.service.BrandService;
 import org.junit.jupiter.api.DisplayName;
@@ -82,6 +83,27 @@ class BrandControllerTest {
 
         //when
         doThrow(InvalidBrandNameException.class)
+                .when(brandService)
+                .createBrand(any());
+
+        //when & then
+        mockMvc.perform(
+                        post("/brands")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(brandRequestJson))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @DisplayName("중복된 브랜드 이름 등록 시 400 반환한다.")
+    @Test
+    void createBrand_Exception_Duplicated() throws Exception {
+        //given
+        NewBrandRequest newBrandRequest = new NewBrandRequest("nike");
+        String brandRequestJson = objectMapper.writeValueAsString(newBrandRequest);
+
+        //when
+        doThrow(DuplicateBrandNameException.class)
                 .when(brandService)
                 .createBrand(any());
 

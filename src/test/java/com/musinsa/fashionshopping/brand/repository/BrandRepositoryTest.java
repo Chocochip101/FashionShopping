@@ -35,4 +35,22 @@ class BrandRepositoryTest {
         long isDiff = brand2.getId() - brand1.getId();
         assertThat(isDiff).isEqualTo(1L);
     }
+
+    @DisplayName("중복된 브랜드 이름이 존재하는지 확인한다.")
+    @Test
+    void existsBrandByName() {
+        //given
+        String name1 = "nike";
+        String name2 = "musinsa";
+        Brand brand = Brand.builder().brandName(new BrandName(name1)).build();
+        brandRepository.save(brand);
+
+        //when
+        final boolean nameDuplicated1 = brandRepository.existsBrandByBrandNameValue(name1);
+        final boolean nameDuplicated2 = brandRepository.existsBrandByBrandNameValue(name2);
+
+        //then
+        assertThat(nameDuplicated1).isTrue();
+        assertThat(nameDuplicated2).isFalse();
+    }
 }
