@@ -7,11 +7,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.musinsa.fashionshopping.brand.service.BrandService;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandResponse;
+import com.musinsa.fashionshopping.brand.service.BrandService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,13 +44,30 @@ class BrandControllerTest {
                 .when(brandService)
                 .createBrand(any());
 
-
         //then
         mockMvc.perform(
                         post("/brands")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(brandRequestJson))
                 .andExpect(status().isCreated())
+                .andDo(print());
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {"", "  "})
+    @DisplayName("브랜드 생성 요청에 적절하지 않은 이름에 대해 400을 반환한다.")
+    void createBoard_Exception_NoName(final String name) throws Exception {
+        //given
+        NewBrandRequest newBrandRequest = new NewBrandRequest(name);
+        String brandRequestJson = objectMapper.writeValueAsString(newBrandRequest);
+
+        //when & then
+        mockMvc.perform(
+                        post("/brands")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(brandRequestJson))
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 }
