@@ -1,11 +1,13 @@
 package com.musinsa.fashionshopping.brand.controller;
 
+import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.service.BrandService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +23,11 @@ public class BrandController {
     public ResponseEntity<Void> createBrand(@Valid @RequestBody NewBrandRequest newBrandRequest) {
         brandService.createBrand(newBrandRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PatchMapping
+    public ResponseEntity<Void> editNickname(@Valid @RequestBody BrandNameUpdateRequest brandNameUpdateRequest) {
+        brandService.editBrandName(brandNameUpdateRequest);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -27,4 +27,8 @@ public class Brand {
         this.id = id;
         this.brandName = brandName;
     }
+
+    public void updateBrandName(BrandName brandName) {
+        this.brandName = brandName;
+    }
 }

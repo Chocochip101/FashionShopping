@@ -6,6 +6,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 import com.musinsa.fashionshopping.ControllerTest;
+import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.InvalidBrandNameException;
@@ -100,5 +101,27 @@ class BrandControllerTest extends ControllerTest {
                 .then().log().all()
                 .apply(document("brands/create/fail/duplicateBrandName"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @DisplayName("닉네임 변경 시 204 반환한다.")
+    @Test
+    void editBrandName() {
+        //given
+        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(1L, "musinsa");
+
+        //when
+        doNothing()
+                .when(brandService)
+                .editBrandName(brandNameUpdateRequest);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(brandNameUpdateRequest)
+                .when().patch("/brands")
+                .then().log().all()
+                .assertThat()
+                .apply(document("brands/patch/success"))
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }
