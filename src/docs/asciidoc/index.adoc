@@ -21,3 +21,6 @@ operation::brands/create/fail/invalidFormat[snippets='http-request,http-response
 ===== 존재하는 이름일 경우
 operation::brands/create/fail/duplicateBrandName[snippets='http-request,http-response']
 
+=== 브랜드 변경
+==== 성공
+operation::brands/patch/success[snippets='http-request,http-response']

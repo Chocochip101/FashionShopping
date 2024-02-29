@@ -3,6 +3,7 @@ package com.musinsa.fashionshopping.brand.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.domain.BrandName;
@@ -75,5 +76,26 @@ class BrandServiceTest {
         //then
         assertThatThrownBy(() -> brandService.createBrand(newBrandRequest))
                 .isInstanceOf(DuplicateBrandNameException.class);
+    }
+
+    @DisplayName("닉네임 수정에 성공한다.")
+    @Test
+    void editBrandName() {
+        //given
+        String brandName = "nike";
+        Brand brand = Brand.builder()
+                .brandName(new BrandName(brandName))
+                .build();
+        brandRepository.save(brand);
+
+        String toChangeName = "나이키";
+        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(brand.getId(), toChangeName);
+
+        //when
+        brandService.editBrandName(brandNameUpdateRequest);
+        Brand foundBrand = brandRepository.findById(brand.getId()).get();
+
+        //then
+        assertThat(foundBrand.getBrandName().getValue()).isEqualTo(toChangeName);
     }
 }
