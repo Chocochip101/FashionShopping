@@ -1,5 +1,6 @@
 package com.musinsa.fashionshopping.brand.controller;
 
+import com.musinsa.fashionshopping.brand.controller.dto.BrandMinPriceResponse;
 import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.service.BrandService;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,5 +39,11 @@ public class BrandController {
     public ResponseEntity<Void> deleteBrand(@PathVariable(name = "id") Long brandId) {
         brandService.deleteBrand(brandId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/min-price-category")
+    public ResponseEntity<BrandMinPriceResponse> findMinPriceCategory() {
+        BrandMinPriceResponse minPriceCategory = brandService.getMinPriceCategoryAndTotal();
+        return ResponseEntity.ok(minPriceCategory);
     }
 }

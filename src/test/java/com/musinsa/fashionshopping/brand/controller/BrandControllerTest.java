@@ -10,6 +10,7 @@ import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.InvalidBrandNameException;
+import com.musinsa.fashionshopping.brand.exception.ProductInsufficientException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -209,5 +210,36 @@ class BrandControllerTest extends ControllerTest {
                 .assertThat()
                 .apply(document("brands/delete/fail/invalidBrand"))
                 .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @DisplayName("최저 가격인 단일 브랜드의 카테고리 상품 조회 시 200을 반환한다.")
+    @Test
+    void findMinPriceBrandCategory() {
+        //given & when & then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/brands/min-price-category")
+                .then().log().all()
+                .assertThat()
+                .apply(document("brands/find/success/minPrice"))
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @DisplayName("상품 부족으로 최저 가격의 브랜드를 계산 불가 시 400을 반환한다.")
+    @Test
+    void findMinPriceBrandCategory_Exception_InsufficientProduct() {
+        //given & when
+        doThrow(new ProductInsufficientException())
+                .when(brandService)
+                .getMinPriceCategoryAndTotal();
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/brands/min-price-category")
+                .then().log().all()
+                .assertThat()
+                .apply(document("brands/find/fail/minPrice"))
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }
