@@ -134,6 +134,29 @@ class ProductControllerTest extends ControllerTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
+    @DisplayName("상품 가격 변경 시 204를 반환한다.")
+    @Test
+    void editPrice() {
+        //given
+        Long productId = 1L;
+        Long toChangePrice = 10_000L;
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(toChangePrice);
+
+        //when
+        doNothing()
+                .when(productService)
+                .editPrice(productId, priceUpdateRequest);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(priceUpdateRequest)
+                .when().patch("/products/{id}/price", productId)
+                .then().log().all()
+                .apply(document("products/patch/price/success"))
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
     @DisplayName("범위에 벗어난 가격으로 상품 가격 수정 시 400을 반환한다.")
     @ParameterizedTest
     @NullSource
