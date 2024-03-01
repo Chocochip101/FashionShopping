@@ -1,9 +1,11 @@
 package com.musinsa.fashionshopping.product.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.domain.BrandName;
+import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.domain.Category;
@@ -55,5 +57,18 @@ class ProductServiceTest {
         assertThat(products.get(0).getPrice()).isEqualTo(price);
         assertThat(products.get(0).getCategory()).isEqualTo(category);
         assertThat(products.get(0).getBrand()).isEqualTo(musinsa);
+    }
+
+    @DisplayName("존재하지 않는 브랜드의 상품 생성 시 예외가 발생한다.")
+    @Test
+    void createProduct_Exception_InvalidBrand() {
+        //given
+        Long price = 10_000L;
+        String category = "TOP";
+        NewProductRequest newProductRequest = new NewProductRequest(price, category);
+
+        //when & then
+        assertThatThrownBy(() -> productService.createProduct(3L, newProductRequest))
+                .isInstanceOf(BrandNotFoundException.class);
     }
 }
