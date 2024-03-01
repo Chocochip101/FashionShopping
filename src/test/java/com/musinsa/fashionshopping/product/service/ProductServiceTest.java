@@ -227,4 +227,15 @@ class ProductServiceTest {
         //then
         assertThat(productRepository.findAll().size()).isEqualTo(0);
     }
+
+    @DisplayName("존재하지 않는 상품 삭제 시 예외가 발생한다.")
+    @Test
+    void deleteProduct_Exception_InvalidProduct() {
+        //given
+        Long invalidProductId = 1L;
+
+        //when & then
+        assertThatThrownBy(() -> productService.deleteProduct(invalidProductId))
+                .isInstanceOf(ProductNotFoundException.class);
+    }
 }

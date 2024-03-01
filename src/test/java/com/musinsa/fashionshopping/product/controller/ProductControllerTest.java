@@ -292,4 +292,24 @@ class ProductControllerTest extends ControllerTest {
                 .apply(document("products/delete/success"))
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
+
+    @DisplayName("존재하지 않는 상품 삭제 시 404를 반환한다.")
+    @Test
+    void deleteProduct_Exception_InvalidProduct() {
+        //given
+        Long invalidProductId = 1L;
+
+        //when
+        doThrow(new ProductNotFoundException())
+                .when(productService)
+                .deleteProduct(invalidProductId);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/products/{id}", invalidProductId)
+                .then().log().all()
+                .apply(document("products/delete/fail/invalidProduct"))
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
 }
