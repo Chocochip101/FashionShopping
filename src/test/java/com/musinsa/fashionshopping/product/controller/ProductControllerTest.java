@@ -249,4 +249,27 @@ class ProductControllerTest extends ControllerTest {
                 .apply(document("products/patch/category/fail/invalidProduct"))
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
+
+    @DisplayName("존재하지 않는 카테고리로 수정 시 404를 반환한다.")
+    @Test
+    void editCategory_Exception_InvalidCategory() {
+        //given
+        Long productId = 5L;
+        String category = "BAGG";
+        CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(category);
+
+        //when
+        doThrow(new CategoryNotFoundException())
+                .when(productService)
+                .editCategory(productId, categoryUpdateRequest);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(categoryUpdateRequest)
+                .when().patch("/products/{id}/category", productId)
+                .then().log().all()
+                .apply(document("products/patch/category/fail/invalidCategory"))
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
 }

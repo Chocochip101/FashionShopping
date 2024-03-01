@@ -188,4 +188,24 @@ class ProductServiceTest {
         assertThatThrownBy(() -> productService.editCategory(invalidProductId, categoryUpdateRequest))
                 .isInstanceOf(ProductNotFoundException.class);
     }
+
+    @DisplayName("존재하지 않는 카테고리로 수정 시 예외가 발생한다.")
+    @Test
+    void editCategory_Exception_InvalidCategory() {
+        //given
+        Long price = 10_000L;
+        Category category = Category.TOP;
+        Product product = Product.builder()
+                .productPrice(new ProductPrice(price))
+                .category(category)
+                .build();
+        productRepository.save(product);
+
+        String invalidCategory = "TOPP";
+        CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(invalidCategory);
+
+        //when & then
+        assertThatThrownBy(() -> productService.editCategory(product.getId(), categoryUpdateRequest))
+                .isInstanceOf(CategoryNotFoundException.class);
+    }
 }
