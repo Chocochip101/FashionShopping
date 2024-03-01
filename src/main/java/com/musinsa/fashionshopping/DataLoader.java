@@ -67,7 +67,7 @@ public class DataLoader implements ApplicationRunner {
         brandRepository.saveAll(brands);
 
         List<Product> products = new ArrayList<>();
-        products.add(Product.builder().brand(A).productPrice(new ProductPrice(1120L)).category(Category.TOP).build());
+        products.add(Product.builder().brand(A).productPrice(new ProductPrice(11200L)).category(Category.TOP).build());
         products.add(Product.builder().brand(A).productPrice(new ProductPrice(5500L)).category(Category.OUTER).build());
         products.add(Product.builder().brand(A).productPrice(new ProductPrice(4200L)).category(Category.PANTS).build());
         products.add(
