@@ -84,7 +84,7 @@ class BrandControllerTest extends ControllerTest {
 
     @DisplayName("중복된 브랜드 이름 등록 시 400 반환한다.")
     @Test
-    void createBrand_Exception_Duplicated() throws Exception {
+    void createBrand_Exception_Duplicated() {
         //given
         NewBrandRequest newBrandRequest = new NewBrandRequest("nike");
 
