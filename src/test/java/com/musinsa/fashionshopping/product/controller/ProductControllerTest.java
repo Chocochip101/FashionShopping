@@ -177,7 +177,7 @@ class ProductControllerTest extends ControllerTest {
                 .body(priceUpdateRequest)
                 .when().patch("/products/{id}/price", productId)
                 .then().log().all()
-                .apply(document("products/patch/invalidPrice"))
+                .apply(document("products/patch/price/invalidPrice"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
@@ -200,7 +200,7 @@ class ProductControllerTest extends ControllerTest {
                 .body(priceUpdateRequest)
                 .when().patch("/products/{id}/price", invalidProductId)
                 .then().log().all()
-                .apply(document("products/patch/fail/invalidProduct"))
+                .apply(document("products/patch/price/fail/invalidProduct"))
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
@@ -225,5 +225,28 @@ class ProductControllerTest extends ControllerTest {
                 .then().log().all()
                 .apply(document("products/patch/category/success"))
                 .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @DisplayName("존재하지 않는 상품의 카테고리 수정 시 404를 반환한다.")
+    @Test
+    void editCategory_Exception_InvalidProduct() {
+        //given
+        Long invalidProductId = 5L;
+        String category = "BAG";
+        CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(category);
+
+        //when
+        doThrow(new ProductNotFoundException())
+                .when(productService)
+                .editCategory(invalidProductId, categoryUpdateRequest);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(categoryUpdateRequest)
+                .when().patch("/products/{id}/category", invalidProductId)
+                .then().log().all()
+                .apply(document("products/patch/category/fail/invalidProduct"))
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 }

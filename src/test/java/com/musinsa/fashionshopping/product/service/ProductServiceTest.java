@@ -175,4 +175,17 @@ class ProductServiceTest {
         assertThat(foundProduct.getProductPrice()).isEqualTo(new ProductPrice(price));
         assertThat(foundProduct.getCategory()).isEqualTo(Category.from(toChangeCategory));
     }
+
+    @DisplayName("존재하지 않는 상품의 카테고리 수정 시 예외가 발생한다.")
+    @Test
+    void editCategory_Exception_InvalidProduct() {
+        //given
+        String category = "TOP";
+        Long invalidProductId = 4L;
+        CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(category);
+
+        //when & then
+        assertThatThrownBy(() -> productService.editCategory(invalidProductId, categoryUpdateRequest))
+                .isInstanceOf(ProductNotFoundException.class);
+    }
 }
