@@ -10,6 +10,9 @@ import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -36,7 +39,7 @@ class ProductControllerTest extends ControllerTest {
                 .statusCode(HttpStatus.CREATED.value());
     }
 
-    @DisplayName("존재하지 않는 브랜드의 상품 생성 시 400을 반환한다.")
+    @DisplayName("존재하지 않는 브랜드의 상품 생성 시 404 반환한다.")
     @Test
     void addProduct_Exception_InvalidBrand() {
         //given
@@ -58,7 +61,7 @@ class ProductControllerTest extends ControllerTest {
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
-    @DisplayName("존재하지 않는 카테고리로 생성 시 400을 반환한다.")
+    @DisplayName("존재하지 않는 카테고리로 생성 시 404을 반환한다.")
     @Test
     void addProduct_Exception_InvalidCategory() {
         //given
@@ -82,4 +85,42 @@ class ProductControllerTest extends ControllerTest {
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
+    @DisplayName("상품 생성 요청에 빈 카테고리에 대해 400을 반환한다.")
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {"", "  "})
+    void addProduct_Exception_NoCategory(String invalidCategory) {
+        //given
+        Long brandId = 1L;
+        Long price = 10_000L;
+        NewProductRequest newProductRequest = new NewProductRequest(price, invalidCategory);
+
+        //when & then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(newProductRequest)
+                .when().post("/brands/{id}/products", brandId)
+                .then().log().all()
+                .apply(document("products/create/noCategory"))
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @DisplayName("상품 생성 요청에 빈 가격에 대해 400을 반환한다.")
+    @Test
+    void addProduct_Exception_InvalidPrice() {
+        //given
+        Long brandId = 1L;
+        String category = "TOP";
+        NewProductRequest newProductRequest = new NewProductRequest(null, category);
+
+        //when & then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(newProductRequest)
+                .when().post("/brands/{id}/products", brandId)
+                .then().log().all()
+                .apply(document("products/create/invalidPrice"))
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+
+    }
 }
