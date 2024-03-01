@@ -13,11 +13,14 @@ import com.musinsa.fashionshopping.product.domain.Category;
 import com.musinsa.fashionshopping.product.domain.Product;
 import com.musinsa.fashionshopping.product.domain.ProductPrice;
 import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
+import com.musinsa.fashionshopping.product.exception.InvalidProductPriceException;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -99,7 +102,7 @@ class ProductServiceTest {
                 .category(category)
                 .build();
 
-        product = productRepository.save(product);
+        productRepository.save(product);
         Long toChangePrice = 100_000L;
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(toChangePrice);
 
@@ -111,5 +114,25 @@ class ProductServiceTest {
 
         assertThat(foundProduct.getProductPrice()).isEqualTo(new ProductPrice(toChangePrice));
         assertThat(foundProduct.getCategory()).isEqualTo(category);
+    }
+
+    @DisplayName("범위에 벗어난 가격으로 상품 가격 수정 시 예외가 발생한다.")
+    @ParameterizedTest
+    @ValueSource(longs = {-1, 100_000_000_000L, 1})
+    void editProductPrice_Exception_InvalidPrice(Long invalidPrice) {
+        //given
+        Long price = 10_000L;
+        Category category = Category.TOP;
+        Product product = Product.builder()
+                .productPrice(new ProductPrice(price))
+                .category(category)
+                .build();
+
+        productRepository.save(product);
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(invalidPrice);
+
+        //when & then
+        assertThatThrownBy(() -> productService.editPrice(product.getId(), priceUpdateRequest))
+                .isInstanceOf(InvalidProductPriceException.class);
     }
 }

@@ -7,6 +7,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import com.musinsa.fashionshopping.ControllerTest;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
+import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
 import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import com.musinsa.fashionshopping.product.exception.InvalidProductPriceException;
 import org.junit.jupiter.api.DisplayName;
@@ -129,6 +130,29 @@ class ProductControllerTest extends ControllerTest {
                 .then().log().all()
                 .apply(document("products/create/invalidPrice"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 
+    @DisplayName("범위에 벗어난 가격으로 상품 가격 수정 시 400을 반환한다.")
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {-1, 100_000_000_000L, 1})
+    void editProduct_Exception_InvalidPrice(Long invalidPrice) {
+        //given
+        Long productId = 1L;
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(invalidPrice);
+
+        //when
+        doThrow(new InvalidProductPriceException())
+                .when(productService)
+                .editPrice(productId, priceUpdateRequest);
+
+        // then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(priceUpdateRequest)
+                .when().patch("/products/{id}/price", productId)
+                .then().log().all()
+                .apply(document("products/patch/invalidPrice"))
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }
