@@ -7,6 +7,7 @@ import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.domain.BrandName;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
 import com.musinsa.fashionshopping.product.domain.Category;
@@ -148,5 +149,63 @@ class ProductServiceTest {
         //when & then
         assertThatThrownBy(() -> productService.editPrice(invalidProductId, priceUpdateRequest))
                 .isInstanceOf(ProductNotFoundException.class);
+    }
+
+    @DisplayName("상품 카테고리 수정에 성공한다.")
+    @Test
+    void editCategory() {
+        //given
+        Long price = 10_000L;
+        Category category = Category.TOP;
+        Product product = Product.builder()
+                .productPrice(new ProductPrice(price))
+                .category(category)
+                .build();
+
+        productRepository.save(product);
+        String toChangeCategory = "BAG";
+        CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(toChangeCategory);
+
+        //when
+        productService.editCategory(product.getId(), categoryUpdateRequest);
+
+        //then
+        Product foundProduct = productRepository.findById(product.getId()).get();
+
+        assertThat(foundProduct.getProductPrice()).isEqualTo(new ProductPrice(price));
+        assertThat(foundProduct.getCategory()).isEqualTo(Category.from(toChangeCategory));
+    }
+
+    @DisplayName("존재하지 않는 상품의 카테고리 수정 시 예외가 발생한다.")
+    @Test
+    void editCategory_Exception_InvalidProduct() {
+        //given
+        String category = "TOP";
+        Long invalidProductId = 4L;
+        CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(category);
+
+        //when & then
+        assertThatThrownBy(() -> productService.editCategory(invalidProductId, categoryUpdateRequest))
+                .isInstanceOf(ProductNotFoundException.class);
+    }
+
+    @DisplayName("존재하지 않는 카테고리로 수정 시 예외가 발생한다.")
+    @Test
+    void editCategory_Exception_InvalidCategory() {
+        //given
+        Long price = 10_000L;
+        Category category = Category.TOP;
+        Product product = Product.builder()
+                .productPrice(new ProductPrice(price))
+                .category(category)
+                .build();
+        productRepository.save(product);
+
+        String invalidCategory = "TOPP";
+        CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(invalidCategory);
+
+        //when & then
+        assertThatThrownBy(() -> productService.editCategory(product.getId(), categoryUpdateRequest))
+                .isInstanceOf(CategoryNotFoundException.class);
     }
 }

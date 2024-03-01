@@ -1,5 +1,6 @@
 package com.musinsa.fashionshopping.product.controller;
 
+import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
 import com.musinsa.fashionshopping.product.service.ProductService;
@@ -29,6 +30,13 @@ public class ProductController {
     public ResponseEntity<Void> editPrice(@PathVariable(name = "id") Long productId,
                                           @Valid @RequestBody PriceUpdateRequest priceUpdateRequest) {
         productService.editPrice(productId, priceUpdateRequest);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/products/{id}/category")
+    public ResponseEntity<Void> editCategory(@PathVariable(name = "id") Long productId,
+                                             @Valid @RequestBody CategoryUpdateRequest categoryUpdateRequest) {
+        productService.editCategory(productId, categoryUpdateRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

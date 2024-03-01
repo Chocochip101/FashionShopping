@@ -45,6 +45,10 @@ public class Product {
         this.productPrice = productPrice;
     }
 
+    public void updateCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
