@@ -17,3 +17,5 @@ spring:
     url: jdbc:h2:mem:fashionshopping
     username: sa
     password:
+dataloader:
+  enable: true
