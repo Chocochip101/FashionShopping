@@ -16,7 +16,7 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
             +
             "FROM Brand b " +
             "JOIN Product p ON b.id = p.brand.id " +
-            "GROUP BY b.id, b.brandName.value " +
+            "GROUP BY b.id " +
             "ORDER BY SUM(p.productPrice.price) ASC ")
     List<MinBrandPrice> findBrandByPrices(Pageable pageable);
 
