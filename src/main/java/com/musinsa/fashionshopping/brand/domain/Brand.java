@@ -1,12 +1,17 @@
 package com.musinsa.fashionshopping.brand.domain;
 
+import com.musinsa.fashionshopping.product.domain.Product;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,10 +28,14 @@ public class Brand {
     @Embedded
     private BrandName brandName;
 
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.REMOVE)
+    private List<Product> products = new ArrayList<>();
+
     @Builder
-    public Brand(final Long id, final BrandName brandName) {
+    public Brand(final Long id, final BrandName brandName, final List<Product> products) {
         this.id = id;
         this.brandName = brandName;
+        this.products = (products != null) ? products : new ArrayList<>();
     }
 
     public void updateBrandName(BrandName brandName) {

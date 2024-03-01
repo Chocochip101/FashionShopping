@@ -17,6 +17,7 @@ import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import com.musinsa.fashionshopping.product.exception.InvalidProductPriceException;
 import com.musinsa.fashionshopping.product.exception.ProductNotFoundException;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +39,7 @@ class ProductServiceTest {
 
     Brand musinsa = Brand.builder()
             .brandName(new BrandName("musinsa"))
+            .products(new ArrayList<>())
             .build();
 
     @BeforeEach
@@ -64,7 +66,7 @@ class ProductServiceTest {
         assertThat(products).isNotNull();
         assertThat(products.get(0).getProductPrice()).isEqualTo(new ProductPrice(price));
         assertThat(products.get(0).getCategory()).isEqualTo(category);
-        assertThat(products.get(0).getBrand()).isEqualTo(musinsa);
+        assertThat(products.get(0).getBrand().getId()).isEqualTo(musinsa.getId());
     }
 
     @DisplayName("존재하지 않는 브랜드의 상품 생성 시 예외가 발생한다.")
@@ -219,6 +221,7 @@ class ProductServiceTest {
                 .productPrice(new ProductPrice(price))
                 .category(category)
                 .build();
+        product.addBrand(musinsa);
         productRepository.save(product);
 
         //when
