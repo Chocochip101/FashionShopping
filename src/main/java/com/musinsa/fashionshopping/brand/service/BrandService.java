@@ -52,4 +52,12 @@ public class BrandService {
             throw new DuplicateBrandNameException();
         }
     }
+
+    @Transactional
+    public void deleteBrand(Long brandId) {
+        Brand brand = brandRepository.findById(brandId)
+                .orElseThrow(BrandNotFoundException::new);
+
+        brandRepository.delete(brand);
+    }
 }

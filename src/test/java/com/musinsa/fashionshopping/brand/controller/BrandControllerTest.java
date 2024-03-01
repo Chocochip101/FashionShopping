@@ -167,4 +167,25 @@ class BrandControllerTest extends ControllerTest {
                 .apply(document("brands/patch/fail/invalidFormat"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
+
+    @DisplayName("브랜드 삭제 시 204를 반환한다.")
+    @Test
+    void deleteBrand() {
+        //given
+        Long brandId = 1L;
+
+        //when
+        doNothing()
+                .when(brandService)
+                .deleteBrand(brandId);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/brands/{id}", brandId)
+                .then().log().all()
+                .assertThat()
+                .apply(document("brands/delete/success"))
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
 }

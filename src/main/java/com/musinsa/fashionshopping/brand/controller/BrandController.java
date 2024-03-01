@@ -7,7 +7,9 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,12 @@ public class BrandController {
     @PatchMapping
     public ResponseEntity<Void> editNickname(@Valid @RequestBody BrandNameUpdateRequest brandNameUpdateRequest) {
         brandService.editBrandName(brandNameUpdateRequest);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBrand(@PathVariable(name = "id") Long brandId) {
+        brandService.deleteBrand(brandId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

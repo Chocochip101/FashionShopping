@@ -10,6 +10,10 @@ import com.musinsa.fashionshopping.brand.domain.BrandName;
 import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.InvalidBrandNameException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
+import com.musinsa.fashionshopping.product.domain.Category;
+import com.musinsa.fashionshopping.product.domain.Product;
+import com.musinsa.fashionshopping.product.domain.ProductPrice;
+import com.musinsa.fashionshopping.product.repository.ProductRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,11 +29,15 @@ class BrandServiceTest {
     BrandRepository brandRepository;
 
     @Autowired
+    ProductRepository productRepository;
+
+    @Autowired
     BrandService brandService;
 
     @BeforeEach
     void setUp() {
         brandRepository.deleteAll();
+        productRepository.deleteAll();
     }
 
     @DisplayName("브랜드를 생성할 수 있다.")
@@ -97,5 +105,31 @@ class BrandServiceTest {
 
         //then
         assertThat(foundBrand.getBrandName().getValue()).isEqualTo(toChangeName);
+    }
+
+    @DisplayName("브랜드 삭제에 성공한다.")
+    @Test
+    void deleteBrand() {
+        //given
+        String brandName = "nike";
+        Brand brand = Brand.builder()
+                .brandName(new BrandName(brandName))
+                .build();
+        brandRepository.save(brand);
+
+        Product product = Product.builder()
+                .productPrice(new ProductPrice(10_00L))
+                .category(Category.ACCESSORY)
+                .brand(brand)
+                .build();
+        product.addBrand(brand);
+        productRepository.save(product);
+
+        //when
+        brandService.deleteBrand(brand.getId());
+
+        //then
+        assertThat(brandRepository.findAll().size()).isEqualTo(0);
+        assertThat(productRepository.findAll().size()).isEqualTo(0);
     }
 }
