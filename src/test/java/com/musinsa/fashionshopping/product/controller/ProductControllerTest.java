@@ -119,7 +119,7 @@ class ProductControllerTest extends ControllerTest {
                 .body(newProductRequest)
                 .when().post("/brands/{id}/products", brandId)
                 .then().log().all()
-                .apply(document("products/create/invalidPrice"))
+                .apply(document("products/create/noPrice"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
 
     }
