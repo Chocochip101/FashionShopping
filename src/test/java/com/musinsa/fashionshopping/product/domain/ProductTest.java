@@ -23,14 +23,14 @@ class ProductTest {
         //when
         Product product = Product.builder()
                 .id(id)
-                .price(price)
+                .productPrice(new ProductPrice(price))
                 .category(category)
                 .brand(brand)
                 .build();
 
         //then
         assertThat(product.getId()).isEqualTo(id);
-        assertThat(product.getPrice()).isEqualTo(price);
+        assertThat(product.getProductPrice()).isEqualTo(new ProductPrice(price));
         assertThat(product.getCategory()).isEqualTo(category);
         assertThat(product.getBrand()).isEqualTo(brand);
     }

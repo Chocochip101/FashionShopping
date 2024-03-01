@@ -7,7 +7,10 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import com.musinsa.fashionshopping.ControllerTest;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
+import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
 import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
+import com.musinsa.fashionshopping.product.exception.InvalidProductPriceException;
+import com.musinsa.fashionshopping.product.exception.ProductNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -106,21 +109,74 @@ class ProductControllerTest extends ControllerTest {
     }
 
     @DisplayName("상품 생성 요청에 빈 가격에 대해 400을 반환한다.")
-    @Test
-    void addProduct_Exception_InvalidPrice() {
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {-1, 100_000_000_000L, 1})
+    void addProduct_Exception_InvalidPrice(Long invalidPrice) {
         //given
         Long brandId = 1L;
         String category = "TOP";
-        NewProductRequest newProductRequest = new NewProductRequest(null, category);
+        NewProductRequest newProductRequest = new NewProductRequest(invalidPrice, category);
 
-        //when & then
+        //when
+        doThrow(new InvalidProductPriceException())
+                .when(productService)
+                .createProduct(brandId, newProductRequest);
+
+        // then
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(newProductRequest)
                 .when().post("/brands/{id}/products", brandId)
                 .then().log().all()
-                .apply(document("products/create/noPrice"))
+                .apply(document("products/create/invalidPrice"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 
+    @DisplayName("범위에 벗어난 가격으로 상품 가격 수정 시 400을 반환한다.")
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {-1, 100_000_000_000L, 1})
+    void editProduct_Exception_InvalidPrice(Long invalidPrice) {
+        //given
+        Long productId = 1L;
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(invalidPrice);
+
+        //when
+        doThrow(new InvalidProductPriceException())
+                .when(productService)
+                .editPrice(productId, priceUpdateRequest);
+
+        // then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(priceUpdateRequest)
+                .when().patch("/products/{id}/price", productId)
+                .then().log().all()
+                .apply(document("products/patch/invalidPrice"))
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @DisplayName("존재하지 않는 상품으로 가격 수정 시 404를 반환한다.")
+    @Test
+    void editProduct_Exception_InvalidProduct() {
+        //given
+        Long invalidProductId = 1L;
+        Long price = 10_000L;
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(price);
+
+        //when
+        doThrow(new ProductNotFoundException())
+                .when(productService)
+                .editPrice(invalidProductId, priceUpdateRequest);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(priceUpdateRequest)
+                .when().patch("/products/{id}/price", invalidProductId)
+                .then().log().all()
+                .apply(document("products/create/fail/invalidProduct"))
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 }
