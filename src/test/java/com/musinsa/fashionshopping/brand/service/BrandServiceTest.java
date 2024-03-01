@@ -7,6 +7,7 @@ import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.domain.BrandName;
+import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.InvalidBrandNameException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
@@ -131,5 +132,16 @@ class BrandServiceTest {
         //then
         assertThat(brandRepository.findAll().size()).isEqualTo(0);
         assertThat(productRepository.findAll().size()).isEqualTo(0);
+    }
+
+    @DisplayName("존재하지 않는 브랜드 삭제 시 예외가 발생한다.")
+    @Test
+    void deleteBrand_Exception_InvalidBrand() {
+        //given
+        Long invalidBrandId = 4L;
+
+        //when & then
+        assertThatThrownBy(() -> brandService.deleteBrand(invalidBrandId))
+                .isInstanceOf(BrandNotFoundException.class);
     }
 }
