@@ -1,13 +1,19 @@
 package com.musinsa.fashionshopping.brand.service;
 
+import com.musinsa.fashionshopping.brand.controller.dto.BrandMinPriceResponse;
 import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
+import com.musinsa.fashionshopping.brand.controller.dto.CategoryInfo;
+import com.musinsa.fashionshopping.brand.controller.dto.LowestPriceInfo;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.domain.BrandName;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
+import com.musinsa.fashionshopping.brand.repository.dto.MinBrandPrice;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BrandService {
+    private static final PageRequest firstPageLimit = PageRequest.of(0, 1);
     private final BrandRepository brandRepository;
 
     @Transactional
@@ -59,5 +66,12 @@ public class BrandService {
                 .orElseThrow(BrandNotFoundException::new);
 
         brandRepository.delete(brand);
+    }
+
+    public BrandMinPriceResponse getMinPriceCategoryAndTotal() {
+        List<MinBrandPrice> minBrandPrice = brandRepository.findBrandByPrices(firstPageLimit);
+        List<CategoryInfo> categoryInfos = brandRepository.findCategoryInfos(minBrandPrice.get(0).getBrandId());
+
+        return new BrandMinPriceResponse(LowestPriceInfo.from(minBrandPrice.get(0), categoryInfos));
     }
 }

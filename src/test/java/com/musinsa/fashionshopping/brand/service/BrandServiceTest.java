@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
+import com.musinsa.fashionshopping.brand.controller.dto.LowestPriceInfo;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.domain.BrandName;
@@ -143,5 +144,40 @@ class BrandServiceTest {
         //when & then
         assertThatThrownBy(() -> brandService.deleteBrand(invalidBrandId))
                 .isInstanceOf(BrandNotFoundException.class);
+    }
+
+    @DisplayName("최저 가격인 단일 브랜드의 카테고리 상품 조회에 성공한다.")
+    @Test
+    void findMinPriceBrandCategory() {
+        //given
+        Brand brandA = Brand.builder()
+                .brandName(new BrandName("A"))
+                .build();
+        Brand brandB = Brand.builder()
+                .brandName(new BrandName("B"))
+                .build();
+        brandRepository.saveAll(List.of(brandA, brandB));
+
+        long priceA = 1000L;
+        Product productA = Product.builder()
+                .productPrice(new ProductPrice(priceA))
+                .category(Category.ACCESSORY)
+                .brand(brandA)
+                .build();
+        long priceB = 100000L;
+        Product productB = Product.builder()
+                .productPrice(new ProductPrice(priceB))
+                .category(Category.TOP)
+                .brand(brandB)
+                .build();
+
+        productRepository.saveAll(List.of(productA, productB));
+
+        //when
+        final LowestPriceInfo response = brandService.getMinPriceCategoryAndTotal().getLowestPrice();
+
+        //then
+        assertThat(response.getBrand()).isEqualTo("A");
+        assertThat(response.getTotalPrice()).isEqualTo("1,000");
     }
 }

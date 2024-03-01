@@ -210,4 +210,17 @@ class BrandControllerTest extends ControllerTest {
                 .apply(document("brands/delete/fail/invalidBrand"))
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
+
+    @DisplayName("최저 가격인 단일 브랜드의 카테고리 상품 조회 시 200을 반환한다.")
+    @Test
+    void findMinPriceBrandCategory() {
+        //given & when & then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/brands/min-price-category")
+                .then().log().all()
+                .assertThat()
+                .apply(document("brands/find/success/minPrice"))
+                .statusCode(HttpStatus.OK.value());
+    }
 }
