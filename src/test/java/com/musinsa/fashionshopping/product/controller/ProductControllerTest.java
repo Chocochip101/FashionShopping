@@ -7,6 +7,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import com.musinsa.fashionshopping.ControllerTest;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
+import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -56,4 +57,29 @@ class ProductControllerTest extends ControllerTest {
                 .apply(document("products/create/fail/invalidBrandId"))
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
+
+    @DisplayName("존재하지 않는 카테고리로 생성 시 400을 반환한다.")
+    @Test
+    void addProduct_Exception_InvalidCategory() {
+        //given
+        Long brandId = 1L;
+        Long price = 10_000L;
+        String invalidCategory = "MIDDLE";
+        NewProductRequest newProductRequest = new NewProductRequest(price, invalidCategory);
+
+        //when
+        doThrow(new CategoryNotFoundException())
+                .when(productService)
+                .createProduct(brandId, newProductRequest);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(newProductRequest)
+                .when().post("/brands/{id}/products", brandId)
+                .then().log().all()
+                .apply(document("products/create/fail/invalidCategory"))
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
 }

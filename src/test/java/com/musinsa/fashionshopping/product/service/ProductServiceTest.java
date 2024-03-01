@@ -10,6 +10,7 @@ import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.domain.Category;
 import com.musinsa.fashionshopping.product.domain.Product;
+import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,5 +71,18 @@ class ProductServiceTest {
         //when & then
         assertThatThrownBy(() -> productService.createProduct(3L, newProductRequest))
                 .isInstanceOf(BrandNotFoundException.class);
+    }
+
+    @DisplayName("존재하지 않는 카테고리로 생성 시 예외가 발생한다.")
+    @Test
+    void createProduct_Exception_InvalidCategory() {
+        //given
+        Long price = 10_000L;
+        String invalidCategory = "MIDDLE";
+        NewProductRequest newProductRequest = new NewProductRequest(price, invalidCategory);
+
+        //when & then
+        assertThatThrownBy(() -> productService.createProduct(musinsa.getId(), newProductRequest))
+                .isInstanceOf(CategoryNotFoundException.class);
     }
 }
