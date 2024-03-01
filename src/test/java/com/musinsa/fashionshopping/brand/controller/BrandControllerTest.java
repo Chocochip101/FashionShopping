@@ -142,7 +142,7 @@ class BrandControllerTest extends ControllerTest {
                 .when().patch("/brands")
                 .then().log().all()
                 .assertThat()
-                .apply(document("brands/create/fail/duplicateBrandName"))
+                .apply(document("brands/patch/fail/duplicateBrandName"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
@@ -164,7 +164,7 @@ class BrandControllerTest extends ControllerTest {
                 .when().patch("/brands")
                 .then().log().all()
                 .assertThat()
-                .apply(document("brands/create/fail/invalidFormat"))
+                .apply(document("brands/patch/fail/invalidFormat"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }

@@ -24,8 +24,12 @@ class BrandRepositoryTest {
     @Test
     void saveNoIdBrand() {
         //given
-        Brand brand1 = Brand.builder().brandName(new BrandName("brand1")).build();
-        Brand brand2 = Brand.builder().brandName(new BrandName("brand2")).build();
+        Brand brand1 = Brand.builder()
+                .brandName(new BrandName("brand1"))
+                .build();
+        Brand brand2 = Brand.builder()
+                .brandName(new BrandName("brand2"))
+                .build();
 
         //when
         brandRepository.save(brand1);
@@ -42,7 +46,9 @@ class BrandRepositoryTest {
         //given
         String name1 = "nike";
         String name2 = "musinsa";
-        Brand brand = Brand.builder().brandName(new BrandName(name1)).build();
+        Brand brand = Brand.builder()
+                .brandName(new BrandName(name1))
+                .build();
         brandRepository.save(brand);
 
         //when
