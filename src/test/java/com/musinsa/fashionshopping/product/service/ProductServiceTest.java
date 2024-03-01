@@ -8,6 +8,7 @@ import com.musinsa.fashionshopping.brand.domain.BrandName;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
+import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
 import com.musinsa.fashionshopping.product.domain.Category;
 import com.musinsa.fashionshopping.product.domain.Product;
 import com.musinsa.fashionshopping.product.domain.ProductPrice;
@@ -85,5 +86,30 @@ class ProductServiceTest {
         //when & then
         assertThatThrownBy(() -> productService.createProduct(musinsa.getId(), newProductRequest))
                 .isInstanceOf(CategoryNotFoundException.class);
+    }
+
+    @DisplayName("상품 금액 수정에 성공한다.")
+    @Test
+    void editProductPrice() {
+        //given
+        Long price = 10_000L;
+        Category category = Category.TOP;
+        Product product = Product.builder()
+                .productPrice(new ProductPrice(price))
+                .category(category)
+                .build();
+
+        product = productRepository.save(product);
+        Long toChangePrice = 100_000L;
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(toChangePrice);
+
+        //when
+        productService.editPrice(product.getId(), priceUpdateRequest);
+
+        //then
+        Product foundProduct = productRepository.findById(product.getId()).get();
+
+        assertThat(foundProduct.getProductPrice()).isEqualTo(new ProductPrice(toChangePrice));
+        assertThat(foundProduct.getCategory()).isEqualTo(category);
     }
 }
