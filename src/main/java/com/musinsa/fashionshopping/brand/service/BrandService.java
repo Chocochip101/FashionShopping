@@ -9,6 +9,7 @@ import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.domain.BrandName;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
+import com.musinsa.fashionshopping.brand.exception.ProductInsufficientException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import com.musinsa.fashionshopping.brand.repository.dto.MinBrandPrice;
 import java.util.List;
@@ -69,9 +70,16 @@ public class BrandService {
     }
 
     public BrandMinPriceResponse getMinPriceCategoryAndTotal() {
-        List<MinBrandPrice> minBrandPrice = brandRepository.findBrandByPrices(firstPageLimit);
-        List<CategoryInfo> categoryInfos = brandRepository.findCategoryInfos(minBrandPrice.get(0).getBrandId());
+        List<MinBrandPrice> minBrandPrices = brandRepository.findBrandByPrices(firstPageLimit);
+        checkMinBrandPricesNotEmpty(minBrandPrices);
+        List<CategoryInfo> categoryInfos = brandRepository.findCategoryInfos(minBrandPrices.get(0).getBrandId());
 
-        return new BrandMinPriceResponse(LowestPriceInfo.from(minBrandPrice.get(0), categoryInfos));
+        return new BrandMinPriceResponse(LowestPriceInfo.from(minBrandPrices.get(0), categoryInfos));
+    }
+
+    private void checkMinBrandPricesNotEmpty(List<MinBrandPrice> minBrandPrices) {
+        if (minBrandPrices.size() == 0) {
+            throw new ProductInsufficientException();
+        }
     }
 }

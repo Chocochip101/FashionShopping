@@ -11,6 +11,7 @@ import com.musinsa.fashionshopping.brand.domain.BrandName;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.InvalidBrandNameException;
+import com.musinsa.fashionshopping.brand.exception.ProductInsufficientException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import com.musinsa.fashionshopping.product.domain.Category;
 import com.musinsa.fashionshopping.product.domain.Product;
@@ -179,5 +180,13 @@ class BrandServiceTest {
         //then
         assertThat(response.getBrand()).isEqualTo("A");
         assertThat(response.getTotalPrice()).isEqualTo("1,000");
+    }
+
+    @DisplayName("상품 부족으로 최저 가격의 브랜드를 계산 불가 시 예외가 발생한다.")
+    @Test
+    void findMinPriceBrandCategory_Exception_InsufficientProduct() {
+        //given &  when & then
+        assertThatThrownBy(() -> brandService.getMinPriceCategoryAndTotal())
+                .isInstanceOf(ProductInsufficientException.class);
     }
 }
