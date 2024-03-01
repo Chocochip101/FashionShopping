@@ -1,0 +1,26 @@
+= FashionShopping API 명세
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:sectnums:
+:docinfo: shared-head
+
+== 브랜드
+
+=== 브랜드 생성
+==== 성공
+operation::brands/create/success[snippets='http-request,http-response']
+==== 실패
+===== 빈 입력일 경우
+operation::brands/create/fail[snippets='http-request,http-response']
+===== 잘못된 이름 형식일 경우
+operation::brands/create/fail/invalidFormat[snippets='http-request,http-response']
+===== 존재하는 이름일 경우
+operation::brands/create/fail/duplicateBrandName[snippets='http-request,http-response']
+
+=== 브랜드 변경
+==== 성공
+operation::brands/patch/success[snippets='http-request,http-response']
