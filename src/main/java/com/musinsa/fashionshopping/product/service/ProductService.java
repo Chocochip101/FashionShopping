@@ -33,6 +33,8 @@ public class ProductService {
                 .brand(brand)
                 .build();
 
+        product.addBrand(brand);
+
         productRepository.save(product);
     }
 
@@ -60,6 +62,8 @@ public class ProductService {
     public void deleteProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFoundException::new);
+
+        product.deleteBrand();
 
         productRepository.delete(product);
     }

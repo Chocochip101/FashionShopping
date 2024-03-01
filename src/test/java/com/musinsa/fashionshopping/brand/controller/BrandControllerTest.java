@@ -7,6 +7,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import com.musinsa.fashionshopping.ControllerTest;
 import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
+import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.InvalidBrandNameException;
 import org.junit.jupiter.api.DisplayName;
@@ -166,5 +167,47 @@ class BrandControllerTest extends ControllerTest {
                 .assertThat()
                 .apply(document("brands/patch/fail/invalidFormat"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @DisplayName("브랜드 삭제 시 204를 반환한다.")
+    @Test
+    void deleteBrand() {
+        //given
+        Long brandId = 1L;
+
+        //when
+        doNothing()
+                .when(brandService)
+                .deleteBrand(brandId);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/brands/{id}", brandId)
+                .then().log().all()
+                .assertThat()
+                .apply(document("brands/delete/success"))
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @DisplayName("존재하지 않는 브랜드 삭제 시 404를 반환한다.")
+    @Test
+    void deleteBrand_Exception_InvalidBrand() {
+        //given
+        Long invalidBrandId = 4L;
+
+        //when
+        doThrow(new BrandNotFoundException())
+                .when(brandService)
+                .deleteBrand(invalidBrandId);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/brands/{id}", invalidBrandId)
+                .then().log().all()
+                .assertThat()
+                .apply(document("brands/delete/fail/invalidBrand"))
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 }

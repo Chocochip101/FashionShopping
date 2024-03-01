@@ -7,9 +7,11 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +32,8 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
     private Brand brand;
 
     @Builder
@@ -47,6 +50,15 @@ public class Product {
 
     public void updateCategory(Category category) {
         this.category = category;
+    }
+
+    public void addBrand(Brand brand) {
+        this.brand = brand;
+        brand.getProducts().add(this);
+    }
+
+    public void deleteBrand() {
+        this.brand.getProducts().remove(this);
     }
 
     @Override
