@@ -6,6 +6,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 
 import com.musinsa.fashionshopping.ControllerTest;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
 import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
@@ -176,7 +177,30 @@ class ProductControllerTest extends ControllerTest {
                 .body(priceUpdateRequest)
                 .when().patch("/products/{id}/price", invalidProductId)
                 .then().log().all()
-                .apply(document("products/create/fail/invalidProduct"))
+                .apply(document("products/patch/fail/invalidProduct"))
                 .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @DisplayName("상품 카테고리 수정 시 204를 반환한다.")
+    @Test
+    void editCategory() {
+        //given
+        Long productId = 1L;
+        String toChangeCategory = "BAG";
+        CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(toChangeCategory);
+
+        //when
+        doNothing()
+                .when(productService)
+                .editCategory(productId, categoryUpdateRequest);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(categoryUpdateRequest)
+                .when().patch("/products/{id}/category", productId)
+                .then().log().all()
+                .apply(document("products/patch/category/success"))
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }

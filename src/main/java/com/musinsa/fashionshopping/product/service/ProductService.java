@@ -3,6 +3,7 @@ package com.musinsa.fashionshopping.product.service;
 import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
 import com.musinsa.fashionshopping.product.domain.Category;
@@ -41,7 +42,17 @@ public class ProductService {
                 .orElseThrow(ProductNotFoundException::new);
 
         ProductPrice validPrice = new ProductPrice(priceUpdateRequest.getPrice());
-        
+
         product.updateProductPrice(validPrice);
+    }
+
+    @Transactional
+    public void editCategory(Long productId, CategoryUpdateRequest categoryUpdateRequest) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(ProductNotFoundException::new);
+
+        Category validCategory = Category.from(categoryUpdateRequest.getCategory());
+
+        product.updateCategory(validCategory);
     }
 }
