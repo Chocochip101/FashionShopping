@@ -208,4 +208,23 @@ class ProductServiceTest {
         assertThatThrownBy(() -> productService.editCategory(product.getId(), categoryUpdateRequest))
                 .isInstanceOf(CategoryNotFoundException.class);
     }
+
+    @DisplayName("상품 삭제에 성공한다.")
+    @Test
+    void deleteProduct() {
+        //given
+        Long price = 10_000L;
+        Category category = Category.TOP;
+        Product product = Product.builder()
+                .productPrice(new ProductPrice(price))
+                .category(category)
+                .build();
+        productRepository.save(product);
+
+        //when
+        productService.deleteProduct(product.getId());
+
+        //then
+        assertThat(productRepository.findAll().size()).isEqualTo(0);
+    }
 }

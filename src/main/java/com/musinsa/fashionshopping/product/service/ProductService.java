@@ -55,4 +55,12 @@ public class ProductService {
 
         product.updateCategory(validCategory);
     }
+
+    @Transactional
+    public void deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(ProductNotFoundException::new);
+
+        productRepository.delete(product);
+    }
 }

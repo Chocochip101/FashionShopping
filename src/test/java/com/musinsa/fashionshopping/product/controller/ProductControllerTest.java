@@ -272,4 +272,24 @@ class ProductControllerTest extends ControllerTest {
                 .apply(document("products/patch/category/fail/invalidCategory"))
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
+
+    @DisplayName("상품 삭제 시 204를 반환한다.")
+    @Test
+    void deleteProduct() {
+        //given
+        Long productId = 1L;
+
+        //when
+        doNothing()
+                .when(productService)
+                .deleteProduct(productId);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/products/{id}", productId)
+                .then().log().all()
+                .apply(document("products/delete/success"))
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
 }
