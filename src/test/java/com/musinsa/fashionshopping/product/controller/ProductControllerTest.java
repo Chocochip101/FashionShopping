@@ -8,6 +8,7 @@ import com.musinsa.fashionshopping.ControllerTest;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
+import com.musinsa.fashionshopping.product.exception.InvalidProductPriceException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -106,20 +107,27 @@ class ProductControllerTest extends ControllerTest {
     }
 
     @DisplayName("상품 생성 요청에 빈 가격에 대해 400을 반환한다.")
-    @Test
-    void addProduct_Exception_InvalidPrice() {
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {-1, 100_000_000_000L, 1})
+    void addProduct_Exception_InvalidPrice(Long invalidPrice) {
         //given
         Long brandId = 1L;
         String category = "TOP";
-        NewProductRequest newProductRequest = new NewProductRequest(null, category);
+        NewProductRequest newProductRequest = new NewProductRequest(invalidPrice, category);
 
-        //when & then
+        //when
+        doThrow(new InvalidProductPriceException())
+                .when(productService)
+                .createProduct(brandId, newProductRequest);
+
+        // then
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(newProductRequest)
                 .when().post("/brands/{id}/products", brandId)
                 .then().log().all()
-                .apply(document("products/create/noPrice"))
+                .apply(document("products/create/invalidPrice"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
 
     }

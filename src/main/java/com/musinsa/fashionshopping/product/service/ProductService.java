@@ -6,6 +6,7 @@ import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.domain.Category;
 import com.musinsa.fashionshopping.product.domain.Product;
+import com.musinsa.fashionshopping.product.domain.ProductPrice;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class ProductService {
                 .orElseThrow(BrandNotFoundException::new);
 
         Product product = Product.builder()
-                .price(newProductRequest.getPrice())
+                .productPrice(new ProductPrice(newProductRequest.getPrice()))
                 .category(Category.from(newProductRequest.getCategory()))
                 .brand(brand)
                 .build();

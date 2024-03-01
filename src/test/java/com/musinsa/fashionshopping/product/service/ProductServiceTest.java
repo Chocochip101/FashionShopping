@@ -10,6 +10,7 @@ import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.domain.Category;
 import com.musinsa.fashionshopping.product.domain.Product;
+import com.musinsa.fashionshopping.product.domain.ProductPrice;
 import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
 import java.util.List;
@@ -55,7 +56,7 @@ class ProductServiceTest {
 
         //then
         assertThat(products).isNotNull();
-        assertThat(products.get(0).getPrice()).isEqualTo(price);
+        assertThat(products.get(0).getProductPrice()).isEqualTo(new ProductPrice(price));
         assertThat(products.get(0).getCategory()).isEqualTo(category);
         assertThat(products.get(0).getBrand()).isEqualTo(musinsa);
     }

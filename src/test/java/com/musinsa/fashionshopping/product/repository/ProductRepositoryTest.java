@@ -6,6 +6,7 @@ import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.domain.BrandName;
 import com.musinsa.fashionshopping.product.domain.Category;
 import com.musinsa.fashionshopping.product.domain.Product;
+import com.musinsa.fashionshopping.product.domain.ProductPrice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,13 +32,13 @@ class ProductRepositoryTest {
                 .build();
 
         Product product1 = Product.builder()
-                .price(10_000L)
+                .productPrice(new ProductPrice(10_000L))
                 .category(Category.ACCESSORY)
                 .brand(brand)
                 .build();
 
         Product product2 = Product.builder()
-                .price(20_000L)
+                .productPrice(new ProductPrice(20_000L))
                 .category(Category.TOP)
                 .brand(brand)
                 .build();
