@@ -14,6 +14,7 @@ import com.musinsa.fashionshopping.product.domain.Product;
 import com.musinsa.fashionshopping.product.domain.ProductPrice;
 import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import com.musinsa.fashionshopping.product.exception.InvalidProductPriceException;
+import com.musinsa.fashionshopping.product.exception.ProductNotFoundException;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -134,5 +135,18 @@ class ProductServiceTest {
         //when & then
         assertThatThrownBy(() -> productService.editPrice(product.getId(), priceUpdateRequest))
                 .isInstanceOf(InvalidProductPriceException.class);
+    }
+
+    @DisplayName("존재하지 않는 상품으로 가격 수정 시 예외가 발생한다.")
+    @Test
+    void editProductPrice_Exception_InvalidProduct() {
+        //given
+        Long price = 10_000L;
+        Long invalidProductId = 4L;
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(price);
+
+        //when & then
+        assertThatThrownBy(() -> productService.editPrice(invalidProductId, priceUpdateRequest))
+                .isInstanceOf(ProductNotFoundException.class);
     }
 }

@@ -10,6 +10,7 @@ import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
 import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import com.musinsa.fashionshopping.product.exception.InvalidProductPriceException;
+import com.musinsa.fashionshopping.product.exception.ProductNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -154,5 +155,28 @@ class ProductControllerTest extends ControllerTest {
                 .then().log().all()
                 .apply(document("products/patch/invalidPrice"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @DisplayName("존재하지 않는 상품으로 가격 수정 시 404를 반환한다.")
+    @Test
+    void editProduct_Exception_InvalidProduct() {
+        //given
+        Long invalidProductId = 1L;
+        Long price = 10_000L;
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(price);
+
+        //when
+        doThrow(new ProductNotFoundException())
+                .when(productService)
+                .editPrice(invalidProductId, priceUpdateRequest);
+
+        //then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(priceUpdateRequest)
+                .when().patch("/products/{id}/price", invalidProductId)
+                .then().log().all()
+                .apply(document("products/create/fail/invalidProduct"))
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 }
