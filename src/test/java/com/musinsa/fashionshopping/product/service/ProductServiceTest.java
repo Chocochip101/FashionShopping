@@ -2,6 +2,8 @@ package com.musinsa.fashionshopping.product.service;
 
 import static com.musinsa.fashionshopping.fixture.BrandFixture.createBrandA;
 import static com.musinsa.fashionshopping.fixture.BrandFixture.createBrandB;
+import static com.musinsa.fashionshopping.fixture.ProductFixture.createProductATop;
+import static com.musinsa.fashionshopping.fixture.ProductFixture.createProductBTop;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -19,6 +21,7 @@ import com.musinsa.fashionshopping.product.exception.InvalidProductPriceExceptio
 import com.musinsa.fashionshopping.product.exception.ProductNotFoundException;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,6 +43,9 @@ class ProductServiceTest {
     private Brand brandA;
     private Brand brandB;
 
+    private Product productA;
+    private Product productB;
+
     @BeforeEach
     void setUp() {
         productRepository.deleteAll();
@@ -48,12 +54,20 @@ class ProductServiceTest {
         brandA = createBrandA();
         brandB = createBrandB();
         brandRepository.saveAll(List.of(brandA, brandB));
+
+        productA = createProductATop();
+        productB = createProductBTop();
+        productA.addBrand(brandA);
+        productB.addBrand(brandB);
+        productRepository.saveAll(List.of(productA, productB));
+
     }
 
     @DisplayName("상품을 생성할 수 있다.")
     @Test
     void createProduct() {
         //given
+        int productSize = productRepository.findAll().size();
         Long price = 10_000L;
         Category category = Category.TOP;
         NewProductRequest newProductRequest = new NewProductRequest(price, "TOP");
@@ -64,9 +78,9 @@ class ProductServiceTest {
 
         //then
         assertThat(products).isNotNull();
-        assertThat(products.get(0).getProductPrice()).isEqualTo(new ProductPrice(price));
-        assertThat(products.get(0).getCategory()).isEqualTo(category);
-        assertThat(products.get(0).getBrand().getId()).isEqualTo(brandA.getId());
+        assertThat(products.size()).isEqualTo(productSize + 1);
+        assertThat(products.get(productSize).getCategory()).isEqualTo(category);
+        assertThat(products.get(productSize).getBrand().getId()).isEqualTo(brandA.getId());
     }
 
     @DisplayName("존재하지 않는 브랜드의 상품 생성 시 예외가 발생한다.")
@@ -99,22 +113,15 @@ class ProductServiceTest {
     @Test
     void editProductPrice() {
         //given
-        Long price = 10_000L;
-        Category category = Category.TOP;
-        Product product = Product.builder()
-                .productPrice(new ProductPrice(price))
-                .category(category)
-                .build();
-
-        productRepository.save(product);
+        Category category = productA.getCategory();
         Long toChangePrice = 100_000L;
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(toChangePrice);
 
         //when
-        productService.editPrice(product.getId(), priceUpdateRequest);
+        productService.editPrice(productA.getId(), priceUpdateRequest);
 
         //then
-        Product foundProduct = productRepository.findById(product.getId()).get();
+        Product foundProduct = productRepository.findById(productA.getId()).get();
 
         assertThat(foundProduct.getProductPrice()).isEqualTo(new ProductPrice(toChangePrice));
         assertThat(foundProduct.getCategory()).isEqualTo(category);
@@ -125,18 +132,10 @@ class ProductServiceTest {
     @ValueSource(longs = {-1, 100_000_000_000L, 1})
     void editProductPrice_Exception_InvalidPrice(Long invalidPrice) {
         //given
-        Long price = 10_000L;
-        Category category = Category.TOP;
-        Product product = Product.builder()
-                .productPrice(new ProductPrice(price))
-                .category(category)
-                .build();
-
-        productRepository.save(product);
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(invalidPrice);
 
         //when & then
-        assertThatThrownBy(() -> productService.editPrice(product.getId(), priceUpdateRequest))
+        assertThatThrownBy(() -> productService.editPrice(productA.getId(), priceUpdateRequest))
                 .isInstanceOf(InvalidProductPriceException.class);
     }
 
@@ -146,6 +145,7 @@ class ProductServiceTest {
         //given
         Long price = 10_000L;
         Long invalidProductId = 4L;
+        productRepository.deleteAll();
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(price);
 
         //when & then
@@ -157,22 +157,15 @@ class ProductServiceTest {
     @Test
     void editCategory() {
         //given
-        Long price = 10_000L;
-        Category category = Category.TOP;
-        Product product = Product.builder()
-                .productPrice(new ProductPrice(price))
-                .category(category)
-                .build();
-
-        productRepository.save(product);
+        Long price = productA.getProductPrice().getPrice();
         String toChangeCategory = "BAG";
         CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(toChangeCategory);
 
         //when
-        productService.editCategory(product.getId(), categoryUpdateRequest);
+        productService.editCategory(productA.getId(), categoryUpdateRequest);
 
         //then
-        Product foundProduct = productRepository.findById(product.getId()).get();
+        Product foundProduct = productRepository.findById(productA.getId()).get();
 
         assertThat(foundProduct.getProductPrice()).isEqualTo(new ProductPrice(price));
         assertThat(foundProduct.getCategory()).isEqualTo(Category.from(toChangeCategory));
@@ -195,40 +188,23 @@ class ProductServiceTest {
     @Test
     void editCategory_Exception_InvalidCategory() {
         //given
-        Long price = 10_000L;
-        Category category = Category.TOP;
-        Product product = Product.builder()
-                .productPrice(new ProductPrice(price))
-                .category(category)
-                .build();
-        productRepository.save(product);
-
         String invalidCategory = "TOPP";
         CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(invalidCategory);
 
         //when & then
-        assertThatThrownBy(() -> productService.editCategory(product.getId(), categoryUpdateRequest))
+        assertThatThrownBy(() -> productService.editCategory(productA.getId(), categoryUpdateRequest))
                 .isInstanceOf(CategoryNotFoundException.class);
     }
 
     @DisplayName("상품 삭제에 성공한다.")
     @Test
     void deleteProduct() {
-        //given
-        Long price = 10_000L;
-        Category category = Category.TOP;
-        Product product = Product.builder()
-                .productPrice(new ProductPrice(price))
-                .category(category)
-                .build();
-        product.addBrand(brandA);
-        productRepository.save(product);
-
-        //when
-        productService.deleteProduct(product.getId());
+        //given & when
+        productService.deleteProduct(productA.getId());
 
         //then
-        assertThat(productRepository.findAll().size()).isEqualTo(0);
+        assertThatThrownBy(() -> productRepository.findById(productA.getId()).get())
+                .isInstanceOf(NoSuchElementException.class);
     }
 
     @DisplayName("존재하지 않는 상품 삭제 시 예외가 발생한다.")
@@ -236,6 +212,7 @@ class ProductServiceTest {
     void deleteProduct_Exception_InvalidProduct() {
         //given
         Long invalidProductId = 1L;
+        productRepository.deleteAll();
 
         //when & then
         assertThatThrownBy(() -> productService.deleteProduct(invalidProductId))

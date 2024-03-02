@@ -2,6 +2,8 @@ package com.musinsa.fashionshopping.brand.service;
 
 import static com.musinsa.fashionshopping.fixture.BrandFixture.createBrandA;
 import static com.musinsa.fashionshopping.fixture.BrandFixture.createBrandB;
+import static com.musinsa.fashionshopping.fixture.ProductFixture.createProductATop;
+import static com.musinsa.fashionshopping.fixture.ProductFixture.createProductBTop;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -14,9 +16,7 @@ import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.InvalidBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.ProductInsufficientException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
-import com.musinsa.fashionshopping.product.domain.Category;
 import com.musinsa.fashionshopping.product.domain.Product;
-import com.musinsa.fashionshopping.product.domain.ProductPrice;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -42,6 +42,9 @@ class BrandServiceTest {
     private Brand brandA;
     private Brand brandB;
 
+    private Product productA;
+    private Product productB;
+
     @BeforeEach
     void setUp() {
         productRepository.deleteAll();
@@ -50,6 +53,12 @@ class BrandServiceTest {
         brandA = createBrandA();
         brandB = createBrandB();
         brandRepository.saveAll(List.of(brandA, brandB));
+
+        productA = createProductATop();
+        productB = createProductBTop();
+        productA.addBrand(brandA);
+        productB.addBrand(brandB);
+        productRepository.saveAll(List.of(productA, productB));
     }
 
     @DisplayName("브랜드를 생성할 수 있다.")
@@ -114,22 +123,13 @@ class BrandServiceTest {
     @DisplayName("브랜드 삭제에 성공한다.")
     @Test
     void deleteBrand() {
-        //given
-        Product product = Product.builder()
-                .productPrice(new ProductPrice(10_00L))
-                .category(Category.ACCESSORY)
-                .brand(brandA)
-                .build();
-        product.addBrand(brandA);
-        productRepository.save(product);
-
-        //when
+        //given & when
         brandService.deleteBrand(brandA.getId());
 
         //then
         assertThatThrownBy(() -> brandRepository.findById(brandA.getId()).get())
                 .isInstanceOf(NoSuchElementException.class);
-        assertThatThrownBy(() -> productRepository.findById(product.getId()).get())
+        assertThatThrownBy(() -> productRepository.findById(productA.getId()).get())
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -147,34 +147,21 @@ class BrandServiceTest {
     @DisplayName("최저 가격인 단일 브랜드의 카테고리 상품 조회에 성공한다.")
     @Test
     void findMinPriceBrandCategory() {
-        //given
-        long priceA = 1000L;
-        Product productA = Product.builder()
-                .productPrice(new ProductPrice(priceA))
-                .category(Category.ACCESSORY)
-                .brand(brandA)
-                .build();
-        long priceB = 100000L;
-        Product productB = Product.builder()
-                .productPrice(new ProductPrice(priceB))
-                .category(Category.TOP)
-                .brand(brandB)
-                .build();
-
-        productRepository.saveAll(List.of(productA, productB));
-
-        //when
+        //given & when
         final LowestPriceInfo response = brandService.getMinPriceCategoryAndTotal().getLowestPrice();
 
         //then
-        assertThat(response.getBrand()).isEqualTo("A");
-        assertThat(response.getTotalPrice()).isEqualTo("1,000");
+        assertThat(response.getBrand()).isEqualTo("B");
+        assertThat(response.getTotalPrice()).isEqualTo("10,500");
     }
 
     @DisplayName("상품 부족으로 최저 가격의 브랜드를 계산 불가 시 예외가 발생한다.")
     @Test
     void findMinPriceBrandCategory_Exception_InsufficientProduct() {
-        //given &  when & then
+        //given
+        productRepository.deleteAll();
+
+        //when & then
         assertThatThrownBy(() -> brandService.getMinPriceCategoryAndTotal())
                 .isInstanceOf(ProductInsufficientException.class);
     }
