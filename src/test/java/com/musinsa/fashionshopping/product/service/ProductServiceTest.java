@@ -1,10 +1,11 @@
 package com.musinsa.fashionshopping.product.service;
 
+import static com.musinsa.fashionshopping.fixture.BrandFixture.createBrandA;
+import static com.musinsa.fashionshopping.fixture.BrandFixture.createBrandB;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import com.musinsa.fashionshopping.brand.domain.Brand;
-import com.musinsa.fashionshopping.brand.domain.BrandName;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
@@ -17,7 +18,6 @@ import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import com.musinsa.fashionshopping.product.exception.InvalidProductPriceException;
 import com.musinsa.fashionshopping.product.exception.ProductNotFoundException;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,17 +37,17 @@ class ProductServiceTest {
     @Autowired
     ProductService productService;
 
-    Brand musinsa = Brand.builder()
-            .brandName(new BrandName("musinsa"))
-            .products(new ArrayList<>())
-            .build();
+    private Brand brandA;
+    private Brand brandB;
 
     @BeforeEach
     void setUp() {
         productRepository.deleteAll();
         brandRepository.deleteAll();
 
-        brandRepository.save(musinsa);
+        brandA = createBrandA();
+        brandB = createBrandB();
+        brandRepository.saveAll(List.of(brandA, brandB));
     }
 
     @DisplayName("상품을 생성할 수 있다.")
@@ -59,14 +59,14 @@ class ProductServiceTest {
         NewProductRequest newProductRequest = new NewProductRequest(price, "TOP");
 
         //when
-        productService.createProduct(musinsa.getId(), newProductRequest);
+        productService.createProduct(brandA.getId(), newProductRequest);
         final List<Product> products = productRepository.findAll();
 
         //then
         assertThat(products).isNotNull();
         assertThat(products.get(0).getProductPrice()).isEqualTo(new ProductPrice(price));
         assertThat(products.get(0).getCategory()).isEqualTo(category);
-        assertThat(products.get(0).getBrand().getId()).isEqualTo(musinsa.getId());
+        assertThat(products.get(0).getBrand().getId()).isEqualTo(brandA.getId());
     }
 
     @DisplayName("존재하지 않는 브랜드의 상품 생성 시 예외가 발생한다.")
@@ -91,7 +91,7 @@ class ProductServiceTest {
         NewProductRequest newProductRequest = new NewProductRequest(price, invalidCategory);
 
         //when & then
-        assertThatThrownBy(() -> productService.createProduct(musinsa.getId(), newProductRequest))
+        assertThatThrownBy(() -> productService.createProduct(brandA.getId(), newProductRequest))
                 .isInstanceOf(CategoryNotFoundException.class);
     }
 
@@ -221,7 +221,7 @@ class ProductServiceTest {
                 .productPrice(new ProductPrice(price))
                 .category(category)
                 .build();
-        product.addBrand(musinsa);
+        product.addBrand(brandA);
         productRepository.save(product);
 
         //when
