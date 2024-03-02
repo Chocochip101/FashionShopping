@@ -312,4 +312,17 @@ class ProductControllerTest extends ControllerTest {
                 .apply(document("products/delete/fail/invalidProduct"))
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
+
+    @DisplayName("특정 카테고리 최저, 최고가격 브랜드 확인 시 200을 반환한다.")
+    @Test
+    void findPriceBrandByCategory() {
+        //given & when & then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/categories/price-brand?category=TOP")
+                .then().log().all()
+                .assertThat()
+                .apply(document("products/find/success/categoriesPrice"))
+                .statusCode(HttpStatus.OK.value());
+    }
 }

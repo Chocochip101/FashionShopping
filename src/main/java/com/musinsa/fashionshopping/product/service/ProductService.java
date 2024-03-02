@@ -3,6 +3,8 @@ package com.musinsa.fashionshopping.product.service;
 import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
+import com.musinsa.fashionshopping.product.controller.dto.BrandPrice;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
@@ -11,6 +13,7 @@ import com.musinsa.fashionshopping.product.domain.Product;
 import com.musinsa.fashionshopping.product.domain.ProductPrice;
 import com.musinsa.fashionshopping.product.exception.ProductNotFoundException;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,5 +69,14 @@ public class ProductService {
         product.deleteBrand();
 
         productRepository.delete(product);
+    }
+
+    public CategoryPriceResponse getPriceBrandByCategory(String category) {
+        Category foundCategory = Category.from(category);
+
+        final List<BrandPrice> minPriceProducts = productRepository.findMinPriceProductsByCategory(foundCategory);
+        final List<BrandPrice> maxPriceProducts = productRepository.findMaxPriceProductsByCategory(foundCategory);
+
+        return new CategoryPriceResponse(foundCategory.getName(), minPriceProducts, maxPriceProducts);
     }
 }

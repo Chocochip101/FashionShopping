@@ -27,4 +27,12 @@ public class ProductFixture {
                 .brand(createBrandB())
                 .build();
     }
+
+    public static Product createProductAPants() {
+        return Product.builder()
+                .productPrice(new ProductPrice(100_000L))
+                .category(Category.PANTS)
+                .brand(createBrandA())
+                .build();
+    }
 }

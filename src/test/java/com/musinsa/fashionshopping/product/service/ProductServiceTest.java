@@ -2,6 +2,7 @@ package com.musinsa.fashionshopping.product.service;
 
 import static com.musinsa.fashionshopping.fixture.BrandFixture.createBrandA;
 import static com.musinsa.fashionshopping.fixture.BrandFixture.createBrandB;
+import static com.musinsa.fashionshopping.fixture.ProductFixture.createProductAPants;
 import static com.musinsa.fashionshopping.fixture.ProductFixture.createProductATop;
 import static com.musinsa.fashionshopping.fixture.ProductFixture.createProductBTop;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -10,6 +11,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
+import com.musinsa.fashionshopping.product.controller.dto.BrandPrice;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
@@ -43,8 +46,10 @@ class ProductServiceTest {
     private Brand brandA;
     private Brand brandB;
 
-    private Product productA;
-    private Product productB;
+    private Product productATop;
+    private Product productBTop;
+
+    private Product productAPants;
 
     @BeforeEach
     void setUp() {
@@ -55,11 +60,13 @@ class ProductServiceTest {
         brandB = createBrandB();
         brandRepository.saveAll(List.of(brandA, brandB));
 
-        productA = createProductATop();
-        productB = createProductBTop();
-        productA.addBrand(brandA);
-        productB.addBrand(brandB);
-        productRepository.saveAll(List.of(productA, productB));
+        productATop = createProductATop();
+        productBTop = createProductBTop();
+        productAPants = createProductAPants();
+        productATop.addBrand(brandA);
+        productBTop.addBrand(brandB);
+        productAPants.addBrand(brandA);
+        productRepository.saveAll(List.of(productATop, productBTop, productAPants));
 
     }
 
@@ -113,15 +120,15 @@ class ProductServiceTest {
     @Test
     void editProductPrice() {
         //given
-        Category category = productA.getCategory();
+        Category category = productATop.getCategory();
         Long toChangePrice = 100_000L;
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(toChangePrice);
 
         //when
-        productService.editPrice(productA.getId(), priceUpdateRequest);
+        productService.editPrice(productATop.getId(), priceUpdateRequest);
 
         //then
-        Product foundProduct = productRepository.findById(productA.getId()).get();
+        Product foundProduct = productRepository.findById(productATop.getId()).get();
 
         assertThat(foundProduct.getProductPrice()).isEqualTo(new ProductPrice(toChangePrice));
         assertThat(foundProduct.getCategory()).isEqualTo(category);
@@ -135,7 +142,7 @@ class ProductServiceTest {
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(invalidPrice);
 
         //when & then
-        assertThatThrownBy(() -> productService.editPrice(productA.getId(), priceUpdateRequest))
+        assertThatThrownBy(() -> productService.editPrice(productATop.getId(), priceUpdateRequest))
                 .isInstanceOf(InvalidProductPriceException.class);
     }
 
@@ -157,15 +164,15 @@ class ProductServiceTest {
     @Test
     void editCategory() {
         //given
-        Long price = productA.getProductPrice().getPrice();
+        Long price = productATop.getProductPrice().getPrice();
         String toChangeCategory = "BAG";
         CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(toChangeCategory);
 
         //when
-        productService.editCategory(productA.getId(), categoryUpdateRequest);
+        productService.editCategory(productATop.getId(), categoryUpdateRequest);
 
         //then
-        Product foundProduct = productRepository.findById(productA.getId()).get();
+        Product foundProduct = productRepository.findById(productATop.getId()).get();
 
         assertThat(foundProduct.getProductPrice()).isEqualTo(new ProductPrice(price));
         assertThat(foundProduct.getCategory()).isEqualTo(Category.from(toChangeCategory));
@@ -192,7 +199,7 @@ class ProductServiceTest {
         CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(invalidCategory);
 
         //when & then
-        assertThatThrownBy(() -> productService.editCategory(productA.getId(), categoryUpdateRequest))
+        assertThatThrownBy(() -> productService.editCategory(productATop.getId(), categoryUpdateRequest))
                 .isInstanceOf(CategoryNotFoundException.class);
     }
 
@@ -200,10 +207,10 @@ class ProductServiceTest {
     @Test
     void deleteProduct() {
         //given & when
-        productService.deleteProduct(productA.getId());
+        productService.deleteProduct(productATop.getId());
 
         //then
-        assertThatThrownBy(() -> productRepository.findById(productA.getId()).get())
+        assertThatThrownBy(() -> productRepository.findById(productATop.getId()).get())
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -217,5 +224,28 @@ class ProductServiceTest {
         //when & then
         assertThatThrownBy(() -> productService.deleteProduct(invalidProductId))
                 .isInstanceOf(ProductNotFoundException.class);
+    }
+
+    @DisplayName("특정 카테고리의 최저, 최고 상품의 브랜드와 가격을 반환한다.")
+    @Test
+    void findPriceBrandByCategory() {
+        //given
+        String category = "TOP";
+
+        //when
+        CategoryPriceResponse priceBrandByCategory = productService.getPriceBrandByCategory(category);
+        
+        //then
+        assertThat(priceBrandByCategory.getCategory()).isEqualTo("상의");
+        assertThat(priceBrandByCategory.getMinBrandPrice().size()).isEqualTo(1);
+        assertThat(priceBrandByCategory.getMinBrandPrice().size()).isEqualTo(1);
+
+        BrandPrice minBrandPrice = priceBrandByCategory.getMinBrandPrice().get(0);
+        BrandPrice maxBrandPrice = priceBrandByCategory.getMaxBrandPrice().get(0);
+
+        assertThat(minBrandPrice.getBrandName()).isEqualTo("B");
+        assertThat(minBrandPrice.getPrice()).isEqualTo("10,500");
+        assertThat(maxBrandPrice.getBrandName()).isEqualTo("A");
+        assertThat(maxBrandPrice.getPrice()).isEqualTo("11,200");
     }
 }
