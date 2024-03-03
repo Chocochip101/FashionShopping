@@ -4,6 +4,8 @@ import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import com.musinsa.fashionshopping.product.controller.dto.BrandPrice;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryBrandPrice;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryMinPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
@@ -13,6 +15,8 @@ import com.musinsa.fashionshopping.product.domain.Product;
 import com.musinsa.fashionshopping.product.domain.ProductPrice;
 import com.musinsa.fashionshopping.product.exception.ProductNotFoundException;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
+import com.musinsa.fashionshopping.product.repository.dto.CategoryMinPrice;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -78,5 +82,22 @@ public class ProductService {
         final List<BrandPrice> maxPriceProducts = productRepository.findMaxPriceProductsByCategory(foundCategory);
 
         return new CategoryPriceResponse(foundCategory.getName(), minPriceProducts, maxPriceProducts);
+    }
+
+    public CategoryMinPriceResponse getCategoriesMinPrice() {
+        List<CategoryMinPrice> categoryMinPrices = productRepository.findCategoryMinPrice().stream()
+                .distinct()
+                .sorted(Comparator.comparingInt(cp -> cp.getCategory().getOrder()))
+                .toList();
+
+        List<CategoryBrandPrice> categoryBrandPrices = categoryMinPrices.stream()
+                .map(CategoryBrandPrice::new)
+                .toList();
+
+        Long totalPrice = categoryMinPrices.stream()
+                .mapToLong(CategoryMinPrice::getPrice)
+                .sum();
+
+        return new CategoryMinPriceResponse(categoryBrandPrices, totalPrice);
     }
 }

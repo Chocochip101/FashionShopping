@@ -13,9 +13,11 @@ public enum Category {
     ACCESSORY("액세서리");
 
     private final String name;
+    private final int order;
 
     Category(final String name) {
         this.name = name;
+        this.order = ordinal();
     }
 
     public static Category from(String value) {
@@ -29,6 +31,10 @@ public enum Category {
 
     public String getName() {
         return name;
+    }
+
+    public int getOrder() {
+        return order;
     }
 
     @Override
