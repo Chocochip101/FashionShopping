@@ -1,8 +1,14 @@
 package com.musinsa.fashionshopping.advice;
 
 public class BusinessException extends RuntimeException {
+    private final String failureValue;
 
-    public BusinessException(String message) {
+    public BusinessException(String message, String failureValue) {
         super(message);
+        this.failureValue = failureValue;
+    }
+
+    public String getFailureValue() {
+        return failureValue;
     }
 }

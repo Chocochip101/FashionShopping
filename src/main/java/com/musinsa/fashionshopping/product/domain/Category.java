@@ -26,7 +26,7 @@ public enum Category {
                 return type;
             }
         }
-        throw new CategoryNotFoundException();
+        throw new CategoryNotFoundException(value);
     }
 
     public String getName() {

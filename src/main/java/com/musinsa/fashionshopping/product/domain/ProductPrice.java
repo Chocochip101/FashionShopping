@@ -23,7 +23,7 @@ public class ProductPrice {
 
     private void validate(Long price) {
         if (price < MIN_PRICE || price > MAX_PRICE) {
-            throw new InvalidProductPriceException();
+            throw new InvalidProductPriceException(price);
         }
     }
 

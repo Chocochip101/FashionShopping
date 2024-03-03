@@ -6,7 +6,7 @@ public class InvalidBrandNameException extends BadRequestException {
 
     private static final String MESSAGE = "잘못된 이름 형식입니다.";
 
-    public InvalidBrandNameException() {
-        super(MESSAGE);
+    public InvalidBrandNameException(String failureValue) {
+        super(MESSAGE, failureValue);
     }
 }

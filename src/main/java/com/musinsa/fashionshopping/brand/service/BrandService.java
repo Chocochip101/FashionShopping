@@ -40,7 +40,7 @@ public class BrandService {
         validate(brandNameUpdateRequest);
 
         Brand brand = brandRepository.findById(brandNameUpdateRequest.getId())
-                .orElseThrow(BrandNotFoundException::new);
+                .orElseThrow(() -> new BrandNotFoundException(brandNameUpdateRequest.getName()));
         BrandName validBrandName = new BrandName(brandNameUpdateRequest.getName());
         brand.updateBrandName(validBrandName);
     }
@@ -57,14 +57,14 @@ public class BrandService {
         boolean isDuplicatedBrandName = brandRepository
                 .existsBrandByBrandNameValue(brandName);
         if (isDuplicatedBrandName) {
-            throw new DuplicateBrandNameException();
+            throw new DuplicateBrandNameException(brandName);
         }
     }
 
     @Transactional
     public void deleteBrand(Long brandId) {
         Brand brand = brandRepository.findById(brandId)
-                .orElseThrow(BrandNotFoundException::new);
+                .orElseThrow(() -> new BrandNotFoundException(brandId));
 
         brandRepository.delete(brand);
     }

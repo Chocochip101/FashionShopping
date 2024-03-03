@@ -27,7 +27,7 @@ public class BrandName {
 
     private void validate(String value) {
         if (value.length() < MIN_LENGTH || value.length() > MAX_LENGTH || !PATTERN.matcher(value).matches()) {
-            throw new InvalidBrandNameException();
+            throw new InvalidBrandNameException(value);
         }
     }
 
