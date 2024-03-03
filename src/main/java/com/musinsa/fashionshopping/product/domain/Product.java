@@ -1,6 +1,7 @@
 package com.musinsa.fashionshopping.product.domain;
 
 import com.musinsa.fashionshopping.brand.domain.Brand;
+import com.musinsa.fashionshopping.global.BaseEntity;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Product {
+public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
