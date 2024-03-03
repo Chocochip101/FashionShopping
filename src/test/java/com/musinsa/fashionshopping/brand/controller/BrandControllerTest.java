@@ -69,7 +69,7 @@ class BrandControllerTest extends ControllerTest {
         NewBrandRequest newBrandRequest = new NewBrandRequest(invalidBrandName);
 
         //when
-        doThrow(new InvalidBrandNameException())
+        doThrow(new InvalidBrandNameException(invalidBrandName))
                 .when(brandService)
                 .createBrand(newBrandRequest);
 
@@ -87,10 +87,11 @@ class BrandControllerTest extends ControllerTest {
     @Test
     void createBrand_Exception_Duplicated() {
         //given
-        NewBrandRequest newBrandRequest = new NewBrandRequest("nike");
+        final String duplicatedName = "nike";
+        NewBrandRequest newBrandRequest = new NewBrandRequest(duplicatedName);
 
         //when
-        doThrow(new DuplicateBrandNameException())
+        doThrow(new DuplicateBrandNameException(duplicatedName))
                 .when(brandService)
                 .createBrand(newBrandRequest);
 
@@ -130,10 +131,11 @@ class BrandControllerTest extends ControllerTest {
     @Test
     void editNickname_Exception_Duplicate() {
         //given
-        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(1L, "musinsa");
+        final String duplicatedName = "musinsa";
+        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(1L, duplicatedName);
 
         //when
-        doThrow(new DuplicateBrandNameException())
+        doThrow(new DuplicateBrandNameException(duplicatedName))
                 .when(brandService)
                 .editBrandName(brandNameUpdateRequest);
 
@@ -152,10 +154,11 @@ class BrandControllerTest extends ControllerTest {
     @Test
     void editNickname_Exception_InvalidFormat() {
         //given
-        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(1L, " ");
+        final String invalidName = " ";
+        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(1L, invalidName);
 
         //when
-        doThrow(new InvalidBrandNameException())
+        doThrow(new InvalidBrandNameException(invalidName))
                 .when(brandService)
                 .editBrandName(brandNameUpdateRequest);
 
@@ -198,7 +201,7 @@ class BrandControllerTest extends ControllerTest {
         Long invalidBrandId = 4L;
 
         //when
-        doThrow(new BrandNotFoundException())
+        doThrow(new BrandNotFoundException(invalidBrandId))
                 .when(brandService)
                 .deleteBrand(invalidBrandId);
 

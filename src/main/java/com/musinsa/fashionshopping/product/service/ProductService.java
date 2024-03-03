@@ -32,7 +32,7 @@ public class ProductService {
     @Transactional
     public void createProduct(Long brandId, NewProductRequest newProductRequest) {
         Brand brand = brandRepository.findById(brandId)
-                .orElseThrow(BrandNotFoundException::new);
+                .orElseThrow(() -> new BrandNotFoundException(brandId));
 
         Product product = Product.builder()
                 .productPrice(new ProductPrice(newProductRequest.getPrice()))
@@ -48,7 +48,7 @@ public class ProductService {
     @Transactional
     public void editPrice(Long productId, PriceUpdateRequest priceUpdateRequest) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(ProductNotFoundException::new);
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         ProductPrice validPrice = new ProductPrice(priceUpdateRequest.getPrice());
 
@@ -58,7 +58,7 @@ public class ProductService {
     @Transactional
     public void editCategory(Long productId, CategoryUpdateRequest categoryUpdateRequest) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(ProductNotFoundException::new);
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         Category validCategory = Category.from(categoryUpdateRequest.getCategory());
 
@@ -68,7 +68,7 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(ProductNotFoundException::new);
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         product.deleteBrand();
 

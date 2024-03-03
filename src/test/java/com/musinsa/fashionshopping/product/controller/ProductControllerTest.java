@@ -51,7 +51,7 @@ class ProductControllerTest extends ControllerTest {
         NewProductRequest newProductRequest = new NewProductRequest(10_000L, "TOP");
 
         //when
-        doThrow(new BrandNotFoundException())
+        doThrow(new BrandNotFoundException(invalidBrandId))
                 .when(productService)
                 .createProduct(invalidBrandId, newProductRequest);
 
@@ -75,7 +75,7 @@ class ProductControllerTest extends ControllerTest {
         NewProductRequest newProductRequest = new NewProductRequest(price, invalidCategory);
 
         //when
-        doThrow(new CategoryNotFoundException())
+        doThrow(new CategoryNotFoundException(invalidCategory))
                 .when(productService)
                 .createProduct(brandId, newProductRequest);
 
@@ -120,7 +120,7 @@ class ProductControllerTest extends ControllerTest {
         NewProductRequest newProductRequest = new NewProductRequest(invalidPrice, category);
 
         //when
-        doThrow(new InvalidProductPriceException())
+        doThrow(new InvalidProductPriceException(invalidPrice))
                 .when(productService)
                 .createProduct(brandId, newProductRequest);
 
@@ -167,7 +167,7 @@ class ProductControllerTest extends ControllerTest {
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(invalidPrice);
 
         //when
-        doThrow(new InvalidProductPriceException())
+        doThrow(new InvalidProductPriceException(invalidPrice))
                 .when(productService)
                 .editPrice(productId, priceUpdateRequest);
 
@@ -190,7 +190,7 @@ class ProductControllerTest extends ControllerTest {
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(price);
 
         //when
-        doThrow(new ProductNotFoundException())
+        doThrow(new ProductNotFoundException(invalidProductId))
                 .when(productService)
                 .editPrice(invalidProductId, priceUpdateRequest);
 
@@ -236,7 +236,7 @@ class ProductControllerTest extends ControllerTest {
         CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(category);
 
         //when
-        doThrow(new ProductNotFoundException())
+        doThrow(new ProductNotFoundException(invalidProductId))
                 .when(productService)
                 .editCategory(invalidProductId, categoryUpdateRequest);
 
@@ -259,7 +259,7 @@ class ProductControllerTest extends ControllerTest {
         CategoryUpdateRequest categoryUpdateRequest = new CategoryUpdateRequest(category);
 
         //when
-        doThrow(new CategoryNotFoundException())
+        doThrow(new CategoryNotFoundException(category))
                 .when(productService)
                 .editCategory(productId, categoryUpdateRequest);
 
@@ -300,7 +300,7 @@ class ProductControllerTest extends ControllerTest {
         Long invalidProductId = 1L;
 
         //when
-        doThrow(new ProductNotFoundException())
+        doThrow(new ProductNotFoundException(invalidProductId))
                 .when(productService)
                 .deleteProduct(invalidProductId);
 

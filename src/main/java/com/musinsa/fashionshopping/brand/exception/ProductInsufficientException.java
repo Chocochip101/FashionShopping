@@ -7,6 +7,6 @@ public class ProductInsufficientException extends BadRequestException {
     private static final String MESSAGE = "상품 부족으로 최저 가격의 브랜드를 계산할 수 없습니다.";
 
     public ProductInsufficientException() {
-        super(MESSAGE);
+        super(MESSAGE, null);
     }
 }
