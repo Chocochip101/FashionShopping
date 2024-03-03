@@ -12,6 +12,8 @@ import com.musinsa.fashionshopping.brand.domain.Brand;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.repository.BrandRepository;
 import com.musinsa.fashionshopping.product.controller.dto.BrandPrice;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryBrandPrice;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryMinPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
@@ -234,7 +236,7 @@ class ProductServiceTest {
 
         //when
         CategoryPriceResponse priceBrandByCategory = productService.getPriceBrandByCategory(category);
-        
+
         //then
         assertThat(priceBrandByCategory.getCategory()).isEqualTo("상의");
         assertThat(priceBrandByCategory.getMinBrandPrice().size()).isEqualTo(1);
@@ -247,5 +249,20 @@ class ProductServiceTest {
         assertThat(minBrandPrice.getPrice()).isEqualTo("10,500");
         assertThat(maxBrandPrice.getBrandName()).isEqualTo("A");
         assertThat(maxBrandPrice.getPrice()).isEqualTo("11,200");
+    }
+
+    @DisplayName("카테고리별 최저 가격의 브랜드와 가격을 반환한다.")
+    @Test
+    void findCategoryMinPrices() {
+        //given & when
+        CategoryMinPriceResponse categoriesMinPrice = productService.getCategoriesMinPrice();
+        List<CategoryBrandPrice> categories = categoriesMinPrice.getCategories();
+
+        //then
+        assertThat(categoriesMinPrice.getTotalPrice()).isEqualTo("110,500");
+        assertThat(categories).isNotNull();
+        assertThat(categories.size()).isEqualTo(2);
+        assertThat(categories.get(0).getCategory()).isEqualTo("상의");
+        assertThat(categories.get(1).getCategory()).isEqualTo("바지");
     }
 }

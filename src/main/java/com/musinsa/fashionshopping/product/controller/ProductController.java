@@ -1,5 +1,6 @@
 package com.musinsa.fashionshopping.product.controller;
 
+import com.musinsa.fashionshopping.product.controller.dto.CategoryMinPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
@@ -54,5 +55,11 @@ public class ProductController {
     public ResponseEntity<CategoryPriceResponse> findPriceBrandByCategory(@RequestParam String category) {
         CategoryPriceResponse priceBrandByCategory = productService.getPriceBrandByCategory(category);
         return ResponseEntity.ok(priceBrandByCategory);
+    }
+
+    @GetMapping("/categories/min-prices")
+    public ResponseEntity<CategoryMinPriceResponse> findCategoryMinPrices() {
+        final CategoryMinPriceResponse minPrice = productService.getCategoriesMinPrice();
+        return ResponseEntity.ok(minPrice);
     }
 }

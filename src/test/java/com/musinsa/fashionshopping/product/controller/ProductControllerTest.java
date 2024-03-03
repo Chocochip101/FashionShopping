@@ -322,7 +322,20 @@ class ProductControllerTest extends ControllerTest {
                 .when().get("/categories/price-brand?category=TOP")
                 .then().log().all()
                 .assertThat()
-                .apply(document("products/find/success/categoriesPrice"))
+                .apply(document("products/find/success/categoriesBrandPrice"))
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @DisplayName("카테고리 별 최저 가격, 브랜드 조회 시 200을 반환한다.")
+    @Test
+    void findCategoryMinPrices() {
+        //given & when & then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/categories/min-prices")
+                .then().log().all()
+                .assertThat()
+                .apply(document("products/find/success/categoriesMinPrices"))
                 .statusCode(HttpStatus.OK.value());
     }
 }
