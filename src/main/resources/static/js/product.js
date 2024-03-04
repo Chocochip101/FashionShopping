@@ -80,6 +80,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteProductForm = document.getElementById('deleteProductForm');
+
+    if (deleteProductForm) {
+        deleteProductForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const deleteProductId = document.getElementById('deleteProductId').value;
+
+            fetch(`http://localhost:8080/products/${deleteProductId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(handleResponse)
+                .catch(handleError);
+        });
+    }
+});
+
 function handleResponse(response) {
     if (response.ok) {
         alert("성공했습니다.");
