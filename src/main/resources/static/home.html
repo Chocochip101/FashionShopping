@@ -48,7 +48,7 @@
         <input type="text" id="createProductCategory" name="createProductCategory" required>
         <button type="submit">등록하기</button>
     </form>
-    
+
     <h4>가격 변경</h4>
     <form id="changeProductPriceForm" enctype="application/json">
         <label for="changeProductPriceId">상품 ID:</label>
@@ -57,7 +57,18 @@
         <label for="changeProductPrice">상품 가격:</label>
         <input type="text" id="changeProductPrice" name="changeProductPrice" required>
 
-        <button type="submit">등록하기</button>
+        <button type="submit">변경하기</button>
+    </form>
+
+    <h4>카테고리 변경</h4>
+    <form id="changeProductCategoryForm" enctype="application/json">
+        <label for="changeProductCategoryId">상품 ID:</label>
+        <input type="text" id="changeProductCategoryId" name="changeProductCategoryId" required>
+
+        <label for="changeProductCategory">카테고리:</label>
+        <input type="text" id="changeProductCategory" name="changeProductCategory" required>
+
+        <button type="submit">변경하기</button>
     </form>
     <script src="./js/brand.js"></script>
     <script src="./js/product.js"></script>

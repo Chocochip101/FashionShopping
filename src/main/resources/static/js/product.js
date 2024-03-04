@@ -53,6 +53,33 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const changeProductCategoryForm = document.getElementById('changeProductCategoryForm');
+
+    if (changeProductCategoryForm) {
+        changeProductCategoryForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const changeProductCategoryId = document.getElementById('changeProductCategoryId').value;
+            const changeProductCategory = document.getElementById('changeProductCategory').value;
+
+            const data = {
+                category: changeProductCategory
+            };
+
+            fetch(`http://localhost:8080/products/${changeProductCategoryId}/category`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(handleResponse)
+                .catch(handleError);
+        });
+    }
+});
+
 function handleResponse(response) {
     if (response.ok) {
         alert("성공했습니다.");
