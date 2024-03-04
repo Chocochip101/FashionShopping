@@ -16,6 +16,17 @@
         <input type="text" id="brandName" name="brandName" required>
         <button type="submit">등록하기</button>
     </form>
+
+    <h4>이름 수정</h4>
+    <form id="changeBrandNameForm" action="http://localhost:8080/brands" method="patch" enctype="application/json">
+        <label for="changeBrandId">Brand ID:</label>
+        <input type="text" id="changeBrandId" name="brandId" required>
+
+        <label for="newBrandName">브랜드명:</label>
+        <input type="text" id="newBrandName" name="newBrandName" required>
+
+        <button type="submit">수정하기</button>
+    </form>
     <script src="./js/brand.js"></script>
 </section>
 </body>

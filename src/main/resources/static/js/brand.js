@@ -21,18 +21,47 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(handleError);
         });
     }
+});
 
-    function handleResponse(response) {
-        if (response.ok) {
-            alert("성공했습니다.");
-        } else {
-            return response.json().then(handleError);
-        }
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    const changeBrandNameForm = document.getElementById('changeBrandNameForm');
 
-    function handleError(errorData) {
-        const errorMessage = errorData.message;
-        const failureValue = errorData.failureValue;
-        alert("실패 이유: " + errorMessage + '\n실패 값: ' + failureValue);
+    if (changeBrandNameForm) {
+        changeBrandNameForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const newBrandName = document.getElementById('newBrandName').value;
+            const changeBrandId = document.getElementById('changeBrandId').value;
+
+            const data = {
+                id: changeBrandId,
+                name: newBrandName
+            };
+
+            fetch('http://localhost:8080/brands', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(handleResponse)
+                .catch(handleError);
+        });
     }
 });
+
+
+function handleResponse(response) {
+    if (response.ok) {
+        alert("성공했습니다.");
+    } else {
+        return response.json().then(handleError);
+    }
+}
+
+function handleError(errorData) {
+    const errorMessage = errorData.message;
+    const failureValue = errorData.failureValue;
+    alert("실패 이유: " + errorMessage + '\n실패 값: ' + failureValue);
+}
