@@ -71,6 +71,64 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const findAllBrandBtn = document.getElementById('findAllBrandBtn');
+
+    if (findAllBrandBtn) {
+        findAllBrandBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            fetch('http://localhost:8080/brands', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(handleError);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayBrandsTable(data);
+                })
+                .catch(handleError);
+        });
+    }
+});
+
+function displayBrandsTable(brandsData) {
+    const resultTable = document.getElementById('resultTable');
+
+    const table = document.createElement('table');
+    table.border = '1';
+
+    const thead = document.createElement('thead');
+    const headerRow = thead.insertRow();
+    for (const key in brandsData[0]) {
+        const th = document.createElement('th');
+        th.textContent = key;
+        headerRow.appendChild(th);
+    }
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    for (const brand of brandsData) {
+        const row = tbody.insertRow();
+        for (const key in brand) {
+            const cell = row.insertCell();
+            cell.textContent = brand[key];
+        }
+    }
+    table.appendChild(tbody);
+
+    resultTable.innerHTML = '';
+    resultTable.appendChild(table);
+}
+
+
 function handleResponse(response) {
     if (response.ok) {
         alert("성공했습니다.");
