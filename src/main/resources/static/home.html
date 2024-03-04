@@ -11,15 +11,15 @@
 <section>
     <h2>브랜드</h2>
     <h4>등록</h4>
-    <form id="createBrandForm" action="http://localhost:8080/brands" method="post" enctype="application/json">
+    <form id="createBrandForm" enctype="application/json">
         <label for="brandName">브랜드명:</label>
         <input type="text" id="brandName" name="brandName" required>
         <button type="submit">등록하기</button>
     </form>
 
     <h4>이름 수정</h4>
-    <form id="changeBrandNameForm" action="http://localhost:8080/brands" method="patch" enctype="application/json">
-        <label for="changeBrandId">Brand ID:</label>
+    <form id="changeBrandNameForm" enctype="application/json">
+        <label for="changeBrandId">브랜드 ID:</label>
         <input type="text" id="changeBrandId" name="changeBrandId" required>
 
         <label for="newBrandName">브랜드명:</label>
@@ -28,13 +28,57 @@
         <button type="submit">수정하기</button>
     </form>
     <h4>삭제</h4>
-    <form id="deleteBrandForm" action="http://localhost:8080/brands" method="delete" enctype="application/json">
-        <label for="deleteBrandId">Brand ID:</label>
+    <form id="deleteBrandForm" enctype="application/json">
+        <label for="deleteBrandId">브랜드 ID:</label>
         <input type="text" id="deleteBrandId" name="deleteBrandId" required>
 
         <button type="submit">삭제하기</button>
     </form>
+
+    <h2>상품</h2>
+    <h4>등록</h4>
+    <form id="createProductForm" enctype="application/json">
+        <label for="createProductBrandId">브랜드 ID:</label>
+        <input type="text" id="createProductBrandId" name="createProductBrandId" required>
+
+        <label for="createProductPrice">상품 가격:</label>
+        <input type="text" id="createProductPrice" name="createProductPrice" required>
+
+        <label for="createProductCategory">카테고리:</label>
+        <input type="text" id="createProductCategory" name="createProductCategory" required>
+        <button type="submit">등록하기</button>
+    </form>
+
+    <h4>가격 변경</h4>
+    <form id="changeProductPriceForm" enctype="application/json">
+        <label for="changeProductPriceId">상품 ID:</label>
+        <input type="text" id="changeProductPriceId" name="changeProductPriceId" required>
+
+        <label for="changeProductPrice">상품 가격:</label>
+        <input type="text" id="changeProductPrice" name="changeProductPrice" required>
+
+        <button type="submit">변경하기</button>
+    </form>
+
+    <h4>카테고리 변경</h4>
+    <form id="changeProductCategoryForm" enctype="application/json">
+        <label for="changeProductCategoryId">상품 ID:</label>
+        <input type="text" id="changeProductCategoryId" name="changeProductCategoryId" required>
+
+        <label for="changeProductCategory">카테고리:</label>
+        <input type="text" id="changeProductCategory" name="changeProductCategory" required>
+
+        <button type="submit">변경하기</button>
+    </form>
+
+    <h4>삭제</h4>
+    <form id="deleteProductForm" enctype="application/json">
+        <label for="deleteProductId">상품 ID:</label>
+        <input type="text" id="deleteProductId" name="deleteProductId" required>
+        <button type="submit">삭제하기</button>
+    </form>
     <script src="./js/brand.js"></script>
+    <script src="./js/product.js"></script>
 </section>
 </body>
 </html>
