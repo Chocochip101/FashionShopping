@@ -21,6 +21,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 class ProductControllerTest extends ControllerTest {
+    @DisplayName("상품 조회 시 200을 반환한다.")
+    @Test
+    void findProducts() {
+        //given & when & then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/products")
+                .then().log().all()
+                .apply(document("products/find/success"))
+                .statusCode(HttpStatus.OK.value());
+    }
+
     @DisplayName("특정 브랜드의 상품을 생성하면 201을 반환한다.")
     @Test
     void addProduct() {

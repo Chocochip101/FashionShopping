@@ -18,6 +18,7 @@ import com.musinsa.fashionshopping.product.controller.dto.CategoryPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
+import com.musinsa.fashionshopping.product.controller.dto.ProductResponse;
 import com.musinsa.fashionshopping.product.domain.Category;
 import com.musinsa.fashionshopping.product.domain.Product;
 import com.musinsa.fashionshopping.product.domain.ProductPrice;
@@ -70,6 +71,19 @@ class ProductServiceTest {
         productAPants.addBrand(brandA);
         productRepository.saveAll(List.of(productATop, productBTop, productAPants));
 
+    }
+
+    @DisplayName("모든 상품 조회에 성공한다.")
+    @Test
+    void findProducts() {
+        //given & when
+        List<ProductResponse> products = productService.findProducts();
+
+        //then
+        assertThat(products.size()).isEqualTo(3);
+        assertThat(products.get(0).getId()).isEqualTo(productATop.getId());
+        assertThat(products.get(0).getCategory()).isEqualTo(productATop.getCategory().getName());
+        assertThat(products.get(0).getPrice()).isEqualTo(productATop.getProductPrice().getPrice());
     }
 
     @DisplayName("상품을 생성할 수 있다.")

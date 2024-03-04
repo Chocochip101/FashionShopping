@@ -10,6 +10,7 @@ import com.musinsa.fashionshopping.product.controller.dto.CategoryPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
+import com.musinsa.fashionshopping.product.controller.dto.ProductResponse;
 import com.musinsa.fashionshopping.product.domain.Category;
 import com.musinsa.fashionshopping.product.domain.Product;
 import com.musinsa.fashionshopping.product.domain.ProductPrice;
@@ -28,6 +29,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
+
+    public List<ProductResponse> findProducts() {
+        return productRepository.findAll().stream()
+                .map(ProductResponse::new)
+                .toList();
+    }
 
     @Transactional
     public void createProduct(Long brandId, NewProductRequest newProductRequest) {

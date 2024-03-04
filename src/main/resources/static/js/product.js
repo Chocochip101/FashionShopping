@@ -333,6 +333,63 @@ function displayCategoryBrandMinMaxPriceTable(jsonData) {
     resultTable.appendChild(table);
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const findAllProductBtn = document.getElementById('findAllProductBtn');
+
+    if (findAllProductBtn) {
+        findAllProductBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            fetch('http://localhost:8080/products', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(handleError);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayProductTable(data);
+                })
+                .catch(handleError);
+        });
+    }
+});
+
+function displayProductTable(data) {
+    const resultTable = document.getElementById('resultTable');
+
+    const table = document.createElement('table');
+    table.border = '1';
+
+    const thead = document.createElement('thead');
+    const headerRow = thead.insertRow();
+    for (const key in data[0]) {
+        const th = document.createElement('th');
+        th.textContent = key;
+        headerRow.appendChild(th);
+    }
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    for (const item of data) {
+        const row = tbody.insertRow();
+        for (const key in item) {
+            const cell = row.insertCell();
+            cell.textContent = item[key];
+        }
+    }
+    table.appendChild(tbody);
+
+    resultTable.innerHTML = '';
+    resultTable.appendChild(table);
+}
+
 function handleResponse(response) {
     if (response.ok) {
         alert("성공했습니다.");

@@ -10,6 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
+    @Query("SELECT p FROM Product p JOIN FETCH Brand b ON p.brand.id = b.id ")
+    List<Product> findAll();
+
     @Query("SELECT NEW com.musinsa.fashionshopping.product.controller.dto.BrandPrice(b.brandName.value, p.productPrice.price) " +
             "FROM Product p " +
             "JOIN FETCH Brand b ON p.brand.id = b.id " +

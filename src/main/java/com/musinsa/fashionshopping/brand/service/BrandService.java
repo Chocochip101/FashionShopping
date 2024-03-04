@@ -2,6 +2,7 @@ package com.musinsa.fashionshopping.brand.service;
 
 import com.musinsa.fashionshopping.brand.controller.dto.BrandMinPriceResponse;
 import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
+import com.musinsa.fashionshopping.brand.controller.dto.BrandResponse;
 import com.musinsa.fashionshopping.brand.controller.dto.CategoryInfo;
 import com.musinsa.fashionshopping.brand.controller.dto.LowestPriceInfo;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
@@ -24,6 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class BrandService {
     private static final PageRequest firstPageLimit = PageRequest.of(0, 1);
     private final BrandRepository brandRepository;
+
+    public List<BrandResponse> findBrands() {
+        return brandRepository.findAll().stream()
+                .map(BrandResponse::new)
+                .toList();
+    }
 
     @Transactional
     public void createBrand(NewBrandRequest newBrandRequest) {

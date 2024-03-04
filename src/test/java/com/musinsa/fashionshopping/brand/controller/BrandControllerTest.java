@@ -20,6 +20,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 class BrandControllerTest extends ControllerTest {
+    @DisplayName("브랜드를 조회하면 200을 반환한다.")
+    @Test
+    void findBrands() {
+        //given & when & then
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/brands")
+                .then().log().all()
+                .apply(document("brands/find/success"))
+                .statusCode(HttpStatus.OK.value());
+    }
 
     @DisplayName("브랜드를 생성하면 201을 반환한다.")
     @Test
