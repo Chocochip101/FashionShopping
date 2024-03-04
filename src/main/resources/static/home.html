@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Shopping</title>
+</head>
+<body>
+<h1>Fashion Shopping</h1>
+
+<section>
+    <h2>브랜드</h2>
+    <h4>등록</h4>
+    <form id="createBrandForm" action="http://localhost:8080/brands" method="post" enctype="application/json">
+        <label for="brandName">브랜드명:</label>
+        <input type="text" id="brandName" name="brandName" required>
+        <button type="submit">등록하기</button>
+    </form>
+    <script src="./js/brand.js"></script>
+</section>
+</body>
+</html>
