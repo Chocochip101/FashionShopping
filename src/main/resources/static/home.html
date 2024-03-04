@@ -76,14 +76,27 @@
         <input type="text" id="deleteProductId" name="deleteProductId" required>
         <button type="submit">삭제하기</button>
     </form>
-    <script src="./js/brand.js"></script>
-    <script src="./js/product.js"></script>
 </section>
+
+<h2>조회</h2>
+
 <section>
-    <h2>조회</h2>
     <button id="categoryBrandPriceBtn">카테고리 별 최저가격 브랜드와 상품 가격, 총액 조회</button>
+</section>
+
+<section>
     <button id="categoryMinBrandPriceBtn">단일 브랜드 모든 카테고리 최저가격 상품 조회</button>
+</section>
+
+<section>
+    <form id="categoryBrandMinMaxPriceForm">
+        <button type="submit" id="categoryBrandMinMaxPriceBtn">카테고리로 최저, 최고 가격 브랜드와 상품 가격 조회</button>
+        <label for="categoryToFind">카테고리:</label>
+        <input type="text" id="categoryToFind" name="categoryToFind" required>
+    </form>
     <div id="resultTable"></div>
 </section>
+<script src="./js/brand.js"></script>
+<script src="./js/product.js"></script>
 </body>
 </html>

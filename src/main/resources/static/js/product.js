@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
                 .then(response => {
                     if (!response.ok) {
-                        response.json().then(handleError);
+                        return response.json().then(handleError);
                     }
                     return response.json();
                 })
@@ -224,13 +224,11 @@ function displayCategoryBrandMinPriceTable(jsonData) {
         }
     });
 
-    // Add a row for the "총액"
     const totalRow = tbody.insertRow();
     const totalCell = totalRow.insertCell();
     totalCell.colSpan = Object.keys(categorySample).length;
     totalCell.textContent = `총액: ${jsonData["최저가"]["총액"]}`;
 
-    // Add a row for the "브랜드"
     const brandRow = tbody.insertRow();
     const brandCell = brandRow.insertCell();
     brandCell.colSpan = Object.keys(categorySample).length;
@@ -242,6 +240,98 @@ function displayCategoryBrandMinPriceTable(jsonData) {
     resultTable.appendChild(table);
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const categoryBrandMinMaxPriceForm = document.getElementById('categoryBrandMinMaxPriceForm');
+
+    if (categoryBrandMinMaxPriceForm) {
+        categoryBrandMinMaxPriceForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const categoryToFind = encodeURIComponent(document.getElementById('categoryToFind').value);
+
+            fetch(`http://localhost:8080/categories/price-brand?category=${categoryToFind}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(handleError);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayCategoryBrandMinMaxPriceTable(data);
+                })
+                .catch(handleError);
+        });
+    }
+});
+
+function displayCategoryBrandMinMaxPriceTable(jsonData) {
+    const resultTable = document.getElementById('resultTable');
+
+    const table = document.createElement('table');
+    table.border = '1';
+
+    const thead = document.createElement('thead');
+    const headerRow = thead.insertRow();
+
+    const categoryTh = document.createElement('th');
+    categoryTh.textContent = '';
+    headerRow.appendChild(categoryTh);
+
+    const minCategorySample = jsonData["최저가"][0];
+    for (const key in minCategorySample) {
+        const th = document.createElement('th');
+        th.textContent = key;
+        headerRow.appendChild(th);
+    }
+
+    const categoryHeader = document.createElement('th');
+    categoryHeader.textContent = '카테고리';
+    headerRow.appendChild(categoryHeader);
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+
+    jsonData["최저가"].forEach(minCategory => {
+        const row = tbody.insertRow();
+
+        const categoryCell = row.insertCell();
+        categoryCell.textContent = "최저가";
+
+        for (const key in minCategory) {
+            const cell = row.insertCell();
+            cell.textContent = minCategory[key];
+        }
+
+        const categoryCellRight = row.insertCell();
+        categoryCellRight.textContent = jsonData["카테고리"];
+    });
+
+    jsonData["최고가"].forEach(maxCategory => {
+        const row = tbody.insertRow();
+        const categoryCell = row.insertCell();
+        categoryCell.textContent = "최고가";
+
+        for (const key in maxCategory) {
+            const cell = row.insertCell();
+            cell.textContent = maxCategory[key];
+        }
+
+        const categoryCellRight = row.insertCell();
+        categoryCellRight.textContent = jsonData["카테고리"];
+    });
+
+    table.appendChild(tbody);
+
+    resultTable.innerHTML = '';
+    resultTable.appendChild(table);
+}
 
 function handleResponse(response) {
     if (response.ok) {
