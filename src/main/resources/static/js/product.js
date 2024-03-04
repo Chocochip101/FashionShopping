@@ -102,10 +102,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    const categoryMinBrandPriceBtn = document.getElementById('categoryMinBrandPriceBtn');
+    const categoryBrandPriceBtn = document.getElementById('categoryBrandPriceBtn');
 
-    if (categoryMinBrandPriceBtn) {
-        categoryMinBrandPriceBtn.addEventListener('click', function (event) {
+    if (categoryBrandPriceBtn) {
+        categoryBrandPriceBtn.addEventListener('click', function (event) {
             event.preventDefault();
 
             fetch('http://localhost:8080/categories/min-prices', {
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(
                     data => {
-                        displayCategoryBrandMinPriceTable(data);
+                        displayCategoryBrandPriceTable(data);
                     }
                 )
                 .catch(handleError);
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-function displayCategoryBrandMinPriceTable(jsonData) {
+function displayCategoryBrandPriceTable(jsonData) {
     const resultTable = document.getElementById('resultTable');
 
     const table = document.createElement('table');
@@ -164,6 +164,84 @@ function displayCategoryBrandMinPriceTable(jsonData) {
     resultTable.innerHTML = '';
     resultTable.appendChild(table);
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const categoryMinBrandPriceBtn = document.getElementById('categoryMinBrandPriceBtn');
+
+    if (categoryMinBrandPriceBtn) {
+        categoryMinBrandPriceBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            fetch('http://localhost:8080/brands/min-price-category', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        response.json().then(handleError);
+                    }
+                    return response.json();
+                })
+                .then(
+                    data => {
+                        displayCategoryBrandMinPriceTable(data);
+                    }
+                )
+                .catch(handleError);
+        });
+    }
+});
+
+function displayCategoryBrandMinPriceTable(jsonData) {
+    const resultTable = document.getElementById('resultTable');
+
+    const table = document.createElement('table');
+    table.border = '1';
+
+    const thead = document.createElement('thead');
+    const headerRow = thead.insertRow();
+
+    // Assuming "브랜드", "카테고리", "가격" are present in each category
+    const categorySample = jsonData["최저가"]["카테고리"][0];
+    for (const key in categorySample) {
+        const th = document.createElement('th');
+        th.textContent = key;
+        headerRow.appendChild(th);
+    }
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+
+    jsonData["최저가"]["카테고리"].forEach(category => {
+        const row = tbody.insertRow();
+        for (const key in category) {
+            const cell = row.insertCell();
+            cell.textContent = category[key];
+        }
+    });
+
+    // Add a row for the "총액"
+    const totalRow = tbody.insertRow();
+    const totalCell = totalRow.insertCell();
+    totalCell.colSpan = Object.keys(categorySample).length;
+    totalCell.textContent = `총액: ${jsonData["최저가"]["총액"]}`;
+
+    // Add a row for the "브랜드"
+    const brandRow = tbody.insertRow();
+    const brandCell = brandRow.insertCell();
+    brandCell.colSpan = Object.keys(categorySample).length;
+    brandCell.textContent = `브랜드: ${jsonData["최저가"]["브랜드"]}`;
+
+    table.appendChild(tbody);
+
+    resultTable.innerHTML = '';
+    resultTable.appendChild(table);
+}
+
 
 function handleResponse(response) {
     if (response.ok) {
