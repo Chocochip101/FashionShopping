@@ -36,10 +36,10 @@ public class BrandService {
     }
 
     @Transactional
-    public void editBrandName(BrandNameUpdateRequest brandNameUpdateRequest) {
+    public void editBrandName(Long brandId, BrandNameUpdateRequest brandNameUpdateRequest) {
         validate(brandNameUpdateRequest);
 
-        Brand brand = brandRepository.findById(brandNameUpdateRequest.getId())
+        Brand brand = brandRepository.findById(brandId)
                 .orElseThrow(() -> new BrandNotFoundException(brandNameUpdateRequest.getName()));
         BrandName validBrandName = new BrandName(brandNameUpdateRequest.getName());
         brand.updateBrandName(validBrandName);
