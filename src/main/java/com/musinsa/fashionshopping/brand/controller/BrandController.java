@@ -2,8 +2,10 @@ package com.musinsa.fashionshopping.brand.controller;
 
 import com.musinsa.fashionshopping.brand.controller.dto.BrandMinPriceResponse;
 import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
+import com.musinsa.fashionshopping.brand.controller.dto.BrandResponse;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.service.BrandService;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BrandController {
     private final BrandService brandService;
+
+    @GetMapping
+    public ResponseEntity<List<BrandResponse>> findBrand() {
+        final List<BrandResponse> brands = brandService.findBrands();
+        return ResponseEntity.ok(brands);
+    }
 
     @PostMapping
     public ResponseEntity<Void> createBrand(@Valid @RequestBody NewBrandRequest newBrandRequest) {

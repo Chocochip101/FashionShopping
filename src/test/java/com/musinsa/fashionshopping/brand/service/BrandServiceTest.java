@@ -8,6 +8,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
+import com.musinsa.fashionshopping.brand.controller.dto.BrandResponse;
 import com.musinsa.fashionshopping.brand.controller.dto.LowestPriceInfo;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.domain.Brand;
@@ -59,6 +60,18 @@ class BrandServiceTest {
         productA.addBrand(brandA);
         productB.addBrand(brandB);
         productRepository.saveAll(List.of(productA, productB));
+    }
+
+    @DisplayName("브랜드 전체 조회에 성공한다.")
+    @Test
+    void findBrands() {
+        //given & when
+        List<BrandResponse> brands = brandService.findBrands();
+
+        //then
+        assertThat(brands.size()).isEqualTo(2);
+        assertThat(brands.get(0).getName()).isEqualTo("A");
+        assertThat(brands.get(1).getName()).isEqualTo("B");
     }
 
     @DisplayName("브랜드를 생성할 수 있다.")
