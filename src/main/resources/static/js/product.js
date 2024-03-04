@@ -101,6 +101,70 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const categoryMinBrandPriceBtn = document.getElementById('categoryMinBrandPriceBtn');
+
+    if (categoryMinBrandPriceBtn) {
+        categoryMinBrandPriceBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            fetch('http://localhost:8080/categories/min-prices', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        response.json().then(handleError);
+                    }
+                    return response.json();
+                })
+                .then(
+                    data => {
+                        displayCategoryBrandMinPriceTable(data);
+                    }
+                )
+                .catch(handleError);
+        });
+    }
+});
+
+function displayCategoryBrandMinPriceTable(jsonData) {
+    const resultTable = document.getElementById('resultTable');
+
+    const table = document.createElement('table');
+    table.border = '1';
+
+    const thead = document.createElement('thead');
+    const headerRow = thead.insertRow();
+    for (const key in jsonData["카테고리"][0]) {
+        const th = document.createElement('th');
+        th.textContent = key;
+        headerRow.appendChild(th);
+    }
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    for (const item of jsonData["카테고리"]) {
+        const row = tbody.insertRow();
+        for (const key in item) {
+            const cell = row.insertCell();
+            cell.textContent = item[key];
+        }
+    }
+    table.appendChild(tbody);
+
+    const totalRow = tbody.insertRow();
+    const totalCell = totalRow.insertCell();
+    totalCell.colSpan = Object.keys(jsonData["카테고리"][0]).length;
+    totalCell.textContent = `총액: ${jsonData["총액"]}`;
+
+    resultTable.innerHTML = '';
+    resultTable.appendChild(table);
+}
+
 function handleResponse(response) {
     if (response.ok) {
         alert("성공했습니다.");
