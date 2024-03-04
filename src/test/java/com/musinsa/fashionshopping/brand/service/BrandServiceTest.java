@@ -110,10 +110,10 @@ class BrandServiceTest {
     void editBrandName() {
         //given
         String toChangeName = "나이키";
-        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(brandA.getId(), toChangeName);
+        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(toChangeName);
 
         //when
-        brandService.editBrandName(brandNameUpdateRequest);
+        brandService.editBrandName(brandA.getId(), brandNameUpdateRequest);
         Brand foundBrand = brandRepository.findById(brandA.getId()).get();
 
         //then

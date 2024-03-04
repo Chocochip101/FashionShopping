@@ -34,11 +34,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const changeBrandId = document.getElementById('changeBrandId').value;
 
             const data = {
-                id: changeBrandId,
                 name: newBrandName
             };
 
-            fetch('http://localhost:8080/brands', {
+            fetch(`http://localhost:8080/brands/${changeBrandId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'

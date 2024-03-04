@@ -29,9 +29,10 @@ public class BrandController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping
-    public ResponseEntity<Void> editNickname(@Valid @RequestBody BrandNameUpdateRequest brandNameUpdateRequest) {
-        brandService.editBrandName(brandNameUpdateRequest);
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> editBrandName(@PathVariable(name = "id") Long brandId,
+                                              @Valid @RequestBody BrandNameUpdateRequest brandNameUpdateRequest) {
+        brandService.editBrandName(brandId, brandNameUpdateRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

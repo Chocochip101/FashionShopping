@@ -109,18 +109,19 @@ class BrandControllerTest extends ControllerTest {
     @Test
     void editBrandName() {
         //given
-        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(1L, "musinsa");
+        Long brandId = 1L;
+        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest("musinsa");
 
         //when
         doNothing()
                 .when(brandService)
-                .editBrandName(brandNameUpdateRequest);
+                .editBrandName(brandId, brandNameUpdateRequest);
 
         //then
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(brandNameUpdateRequest)
-                .when().patch("/brands")
+                .when().patch("/brands/{brandId}", brandId)
                 .then().log().all()
                 .assertThat()
                 .apply(document("brands/patch/success"))
@@ -131,19 +132,20 @@ class BrandControllerTest extends ControllerTest {
     @Test
     void editNickname_Exception_Duplicate() {
         //given
-        final String duplicatedName = "musinsa";
-        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(1L, duplicatedName);
+        String duplicatedName = "musinsa";
+        Long brandId = 1L;
+        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(duplicatedName);
 
         //when
         doThrow(new DuplicateBrandNameException(duplicatedName))
                 .when(brandService)
-                .editBrandName(brandNameUpdateRequest);
+                .editBrandName(brandId, brandNameUpdateRequest);
 
         //then
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(brandNameUpdateRequest)
-                .when().patch("/brands")
+                .when().patch("/brands/{brandId}", brandId)
                 .then().log().all()
                 .assertThat()
                 .apply(document("brands/patch/fail/duplicateBrandName"))
@@ -155,18 +157,19 @@ class BrandControllerTest extends ControllerTest {
     void editNickname_Exception_InvalidFormat() {
         //given
         final String invalidName = " ";
-        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(1L, invalidName);
+        Long brandId = 1L;
+        BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(invalidName);
 
         //when
         doThrow(new InvalidBrandNameException(invalidName))
                 .when(brandService)
-                .editBrandName(brandNameUpdateRequest);
+                .editBrandName(brandId, brandNameUpdateRequest);
 
         //then
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(brandNameUpdateRequest)
-                .when().patch("/brands")
+                .when().patch("/brands/{brandId}", brandId)
                 .then().log().all()
                 .assertThat()
                 .apply(document("brands/patch/fail/invalidFormat"))
