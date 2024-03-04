@@ -128,6 +128,10 @@ function displayBrandsTable(brandsData) {
     resultTable.appendChild(table);
 }
 
+document.getElementById('clearButton').addEventListener('click', function() {
+    const resultTable = document.getElementById('resultTable');
+    resultTable.innerHTML = '';
+});
 
 function handleResponse(response) {
     if (response.ok) {

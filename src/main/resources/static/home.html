@@ -4,9 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fashion Shopping</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
 </head>
 <body>
 <h1>Fashion Shopping</h1>
+
+<h2>조회</h2>
+<section>
+    <button id="findAllBrandBtn">브랜드 전체 조회하기</button>
+</section>
+<section>
+    <button id="findAllProductBtn">상품 전체 조회하기</button>
+</section>
+<section>
+    <button id="categoryBrandPriceBtn">카테고리 별 최저가격 브랜드와 상품 가격, 총액 조회하기</button>
+</section>
+
+<section>
+    <button id="categoryMinBrandPriceBtn">단일 브랜드 모든 카테고리 최저가격 상품 조회하기</button>
+</section>
+
+<section>
+    <form id="categoryBrandMinMaxPriceForm">
+        <button type="submit" id="categoryBrandMinMaxPriceBtn">카테고리로 최저, 최고 가격 브랜드와 상품 가격 조회하기</button>
+        <label for="categoryToFind">카테고리:</label>
+        <input type="text" id="categoryToFind" name="categoryToFind" required>
+    </form>
+</section>
+<button id="clearButton"> 결과 닫기</button>
+<div id="resultTable"></div>
 
 <section>
     <h2>브랜드</h2>
@@ -77,30 +104,6 @@
         <button type="submit">삭제하기</button>
     </form>
 </section>
-
-<h2>조회</h2>
-<section>
-    <button id="findAllBrandBtn">브랜드 전체 조회</button>
-</section>
-<section>
-    <button id="findAllProductBtn">상품 전체 조회</button>
-</section>
-<section>
-    <button id="categoryBrandPriceBtn">카테고리 별 최저가격 브랜드와 상품 가격, 총액 조회</button>
-</section>
-
-<section>
-    <button id="categoryMinBrandPriceBtn">단일 브랜드 모든 카테고리 최저가격 상품 조회</button>
-</section>
-
-<section>
-    <form id="categoryBrandMinMaxPriceForm">
-        <button type="submit" id="categoryBrandMinMaxPriceBtn">카테고리로 최저, 최고 가격 브랜드와 상품 가격 조회</button>
-        <label for="categoryToFind">카테고리:</label>
-        <input type="text" id="categoryToFind" name="categoryToFind" required>
-    </form>
-</section>
-<div id="resultTable"></div>
 <script src="./js/brand.js"></script>
 <script src="./js/product.js"></script>
 </body>
