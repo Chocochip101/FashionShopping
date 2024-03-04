@@ -26,6 +26,33 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const changeProductPriceForm = document.getElementById('changeProductPriceForm');
+
+    if (changeProductPriceForm) {
+        changeProductPriceForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const changeProductPriceId = document.getElementById('changeProductPriceId').value;
+            const changeProductPrice = document.getElementById('changeProductPrice').value;
+
+            const data = {
+                price: changeProductPrice
+            };
+
+            fetch(`http://localhost:8080/products/${changeProductPriceId}/price`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(handleResponse)
+                .catch(handleError);
+        });
+    }
+});
+
 function handleResponse(response) {
     if (response.ok) {
         alert("성공했습니다.");
