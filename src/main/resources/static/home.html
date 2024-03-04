@@ -20,12 +20,19 @@
     <h4>이름 수정</h4>
     <form id="changeBrandNameForm" action="http://localhost:8080/brands" method="patch" enctype="application/json">
         <label for="changeBrandId">Brand ID:</label>
-        <input type="text" id="changeBrandId" name="brandId" required>
+        <input type="text" id="changeBrandId" name="changeBrandId" required>
 
         <label for="newBrandName">브랜드명:</label>
         <input type="text" id="newBrandName" name="newBrandName" required>
 
         <button type="submit">수정하기</button>
+    </form>
+    <h4>삭제</h4>
+    <form id="deleteBrandForm" action="http://localhost:8080/brands" method="delete" enctype="application/json">
+        <label for="deleteBrandId">Brand ID:</label>
+        <input type="text" id="deleteBrandId" name="deleteBrandId" required>
+
+        <button type="submit">삭제하기</button>
     </form>
     <script src="./js/brand.js"></script>
 </section>

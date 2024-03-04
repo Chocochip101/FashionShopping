@@ -51,6 +51,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteBrandForm = document.getElementById('deleteBrandForm');
+
+    if (deleteBrandForm) {
+        deleteBrandForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const deleteBrandId = document.getElementById('deleteBrandId').value;
+
+            fetch(`http://localhost:8080/brands/${deleteBrandId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(handleResponse)
+                .catch(handleError);
+        });
+    }
+});
+
 
 function handleResponse(response) {
     if (response.ok) {
