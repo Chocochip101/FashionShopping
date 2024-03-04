@@ -5,7 +5,9 @@ import com.musinsa.fashionshopping.product.controller.dto.CategoryPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
+import com.musinsa.fashionshopping.product.controller.dto.ProductResponse;
 import com.musinsa.fashionshopping.product.service.ProductService;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+
+    @GetMapping("/products")
+    public ResponseEntity<List<ProductResponse>> findProducts() {
+        final List<ProductResponse> products = productService.findProducts();
+        return ResponseEntity.ok(products);
+    }
 
     @PostMapping("/brands/{id}/products")
     public ResponseEntity<Void> addProduct(@PathVariable(name = "id") Long brandId,
