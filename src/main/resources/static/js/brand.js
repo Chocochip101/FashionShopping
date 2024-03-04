@@ -71,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-
 function handleResponse(response) {
     if (response.ok) {
         alert("성공했습니다.");
