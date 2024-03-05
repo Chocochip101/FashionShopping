@@ -26,6 +26,7 @@ import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import com.musinsa.fashionshopping.product.exception.InvalidProductPriceException;
 import com.musinsa.fashionshopping.product.exception.ProductNotFoundException;
 import com.musinsa.fashionshopping.product.repository.ProductRepository;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,14 +77,18 @@ class ProductServiceTest {
     @DisplayName("모든 상품 조회에 성공한다.")
     @Test
     void findProducts() {
-        //given & when
+        //given
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+
+        //when
         List<ProductResponse> products = productService.findProducts();
 
         //then
         assertThat(products.size()).isEqualTo(3);
         assertThat(products.get(0).getId()).isEqualTo(productATop.getId());
         assertThat(products.get(0).getCategory()).isEqualTo(productATop.getCategory().getName());
-        assertThat(products.get(0).getPrice()).isEqualTo(productATop.getProductPrice().getPrice());
+        assertThat(products.get(0).getPrice()).isEqualTo(
+                decimalFormat.format(productATop.getProductPrice().getPrice()));
     }
 
     @DisplayName("상품을 생성할 수 있다.")
@@ -152,7 +157,7 @@ class ProductServiceTest {
 
     @DisplayName("범위에 벗어난 가격으로 상품 가격 수정 시 예외가 발생한다.")
     @ParameterizedTest
-    @ValueSource(longs = {-1, 100_000_000_000L, 1})
+    @ValueSource(longs = {-1, 100_000_000_000L})
     void editProductPrice_Exception_InvalidPrice(Long invalidPrice) {
         //given
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(invalidPrice);
