@@ -1,0 +1,96 @@
+= FashionShopping API 명세
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:sectnums:
+:docinfo: shared-head
+
+== 브랜드
+=== 브랜드 조회
+==== 성공
+operation::brands/find/success[snippets='http-request,http-response']
+=== 브랜드 생성
+==== 성공
+operation::brands/create/success[snippets='http-request,http-response']
+==== 실패
+===== 빈 입력일 경우
+operation::brands/create/fail[snippets='http-request,http-response']
+===== 잘못된 이름 형식일 경우
+operation::brands/create/fail/invalidFormat[snippets='http-request,http-response']
+===== 중복된 브랜드명일 경우
+operation::brands/create/fail/duplicateBrandName[snippets='http-request,http-response']
+
+=== 브랜드 변경
+==== 성공
+operation::brands/patch/success[snippets='http-request,http-response']
+===== 중복된 브랜드명일 경우
+operation::brands/patch/fail/duplicateBrandName[snippets='http-request,http-response']
+===== 빈 입력일 경우
+operation::brands/patch/fail/invalidFormat[snippets='http-request,http-response']
+
+=== 브랜드 삭제
+==== 성공
+operation::brands/delete/success[snippets='http-request,http-response']
+==== 실패
+===== 존재하지 않을 브랜드일 경우
+operation::brands/delete/fail/invalidBrand[snippets='http-request,http-response']
+
+=== 조회
+==== 최저 가격인 단일 브랜드의 카테고리 상품 조회
+===== 성공
+operation::brands/find/success/minPrice[snippets='http-request,http-response']
+===== 실패
+====== 상품 부족으로 최저 가격의 브랜드를 계산 불가
+operation::brands/find/fail/minPrice[snippets='http-request,http-response']
+
+== 상품
+=== 상품 조회
+==== 성공
+operation::products/find/success[snippets='http-request,http-response']
+
+=== 상품 생성
+==== 성공
+operation::products/create/success[snippets='http-request,http-response']
+==== 실패
+===== 존재하지 않을 브랜드일 경우
+operation::products/create/fail/invalidBrandId[snippets='http-request,http-response']
+===== 존재하지 않을 카테고리일 경우
+operation::products/create/fail/invalidCategory[snippets='http-request,http-response']
+===== 빈 카테고리 입력일 경우
+operation::products/create/noCategory[snippets='http-request,http-response']
+===== 부적절한 가격 형식일 경우
+operation::products/create/invalidPrice[snippets='http-request,http-response']
+
+=== 가격 변경
+==== 성공
+operation::products/patch/price/success[snippets='http-request,http-response']
+==== 실패
+===== 부적절한 가격 형식일 경우
+operation::products/patch/price/invalidPrice[snippets='http-request,http-response']
+===== 상품이 존재하지 않을 경우
+operation::products/patch/price/fail/invalidProduct[snippets='http-request,http-response']
+
+=== 카테고리 변경
+==== 성공
+operation::products/patch/category/success[snippets='http-request,http-response']
+==== 실패
+===== 카테고리가 존재하지 않을 경우
+operation::products/patch/category/fail/invalidCategory[snippets='http-request,http-response']
+===== 상품이 존재하지 않을 경우
+operation::products/patch/category/fail/invalidProduct[snippets='http-request,http-response']
+
+=== 상품 삭제
+==== 성공
+operation::products/delete/success[snippets='http-request,http-response']
+==== 실패
+===== 상품이 존재하지 않을 경우
+operation::products/delete/fail/invalidProduct[snippets='http-request,http-response']
+
+=== 조회
+==== 특정 카테고리 최저, 최고가격 브랜드 조회
+operation::products/find/success/categoriesBrandPrice[snippets='http-request,http-response']
+==== 카테고리 별 최저 가격, 브랜드 조회
+operation::products/find/success/categoriesMinPrices[snippets='http-request,http-response']
