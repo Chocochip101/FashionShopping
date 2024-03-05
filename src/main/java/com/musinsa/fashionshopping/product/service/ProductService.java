@@ -37,7 +37,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void createProduct(Long brandId, NewProductRequest newProductRequest) {
+    public void createProduct(final Long brandId, final NewProductRequest newProductRequest) {
         Brand brand = brandRepository.findById(brandId)
                 .orElseThrow(() -> new BrandNotFoundException(brandId));
 
@@ -53,7 +53,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void editPrice(Long productId, PriceUpdateRequest priceUpdateRequest) {
+    public void editPrice(final Long productId, final PriceUpdateRequest priceUpdateRequest) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
@@ -63,7 +63,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void editCategory(Long productId, CategoryUpdateRequest categoryUpdateRequest) {
+    public void editCategory(final Long productId, final CategoryUpdateRequest categoryUpdateRequest) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
@@ -73,7 +73,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteProduct(Long productId) {
+    public void deleteProduct(final Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
@@ -82,11 +82,11 @@ public class ProductService {
         productRepository.delete(product);
     }
 
-    public CategoryPriceResponse getPriceBrandByCategory(String category) {
+    public CategoryPriceResponse getPriceBrandByCategory(final String category) {
         Category foundCategory = Category.from(category);
 
-        final List<BrandPrice> minPriceProducts = productRepository.findMinPriceProductsByCategory(foundCategory);
-        final List<BrandPrice> maxPriceProducts = productRepository.findMaxPriceProductsByCategory(foundCategory);
+        List<BrandPrice> minPriceProducts = productRepository.findMinPriceProductsByCategory(foundCategory);
+        List<BrandPrice> maxPriceProducts = productRepository.findMaxPriceProductsByCategory(foundCategory);
 
         return new CategoryPriceResponse(foundCategory.getName(), minPriceProducts, maxPriceProducts);
     }

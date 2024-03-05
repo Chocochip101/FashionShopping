@@ -33,7 +33,7 @@ public class BrandService {
     }
 
     @Transactional
-    public void createBrand(NewBrandRequest newBrandRequest) {
+    public void createBrand(final NewBrandRequest newBrandRequest) {
         validate(newBrandRequest);
 
         Brand brand = Brand.builder()
@@ -43,7 +43,7 @@ public class BrandService {
     }
 
     @Transactional
-    public void editBrandName(Long brandId, BrandNameUpdateRequest brandNameUpdateRequest) {
+    public void editBrandName(final Long brandId, final BrandNameUpdateRequest brandNameUpdateRequest) {
         validate(brandNameUpdateRequest);
 
         Brand brand = brandRepository.findById(brandId)
@@ -52,15 +52,15 @@ public class BrandService {
         brand.updateBrandName(validBrandName);
     }
 
-    private void validate(NewBrandRequest newBrandRequest) {
+    private void validate(final NewBrandRequest newBrandRequest) {
         validateUniqueBrandName(newBrandRequest.getName());
     }
 
-    private void validate(BrandNameUpdateRequest brandNameUpdateRequest) {
+    private void validate(final BrandNameUpdateRequest brandNameUpdateRequest) {
         validateUniqueBrandName(brandNameUpdateRequest.getName());
     }
 
-    private void validateUniqueBrandName(String brandName) {
+    private void validateUniqueBrandName(final String brandName) {
         boolean isDuplicatedBrandName = brandRepository
                 .existsBrandByBrandNameValue(brandName);
         if (isDuplicatedBrandName) {
@@ -69,7 +69,7 @@ public class BrandService {
     }
 
     @Transactional
-    public void deleteBrand(Long brandId) {
+    public void deleteBrand(final Long brandId) {
         Brand brand = brandRepository.findById(brandId)
                 .orElseThrow(() -> new BrandNotFoundException(brandId));
 
@@ -84,7 +84,7 @@ public class BrandService {
         return new BrandMinPriceResponse(LowestPriceInfo.from(minBrandPrices.get(0), categoryInfos));
     }
 
-    private void checkMinBrandPricesNotEmpty(List<MinBrandPrice> minBrandPrices) {
+    private void checkMinBrandPricesNotEmpty(final List<MinBrandPrice> minBrandPrices) {
         if (minBrandPrices.size() == 0) {
             throw new ProductInsufficientException();
         }

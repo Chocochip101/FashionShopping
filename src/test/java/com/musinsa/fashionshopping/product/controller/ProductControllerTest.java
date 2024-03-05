@@ -105,7 +105,7 @@ class ProductControllerTest extends ControllerTest {
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {"", "  "})
-    void addProduct_Exception_NoCategory(String invalidCategory) {
+    void addProduct_Exception_NoCategory(final String invalidCategory) {
         //given
         Long brandId = 1L;
         Long price = 10_000L;
@@ -125,7 +125,7 @@ class ProductControllerTest extends ControllerTest {
     @ParameterizedTest
     @NullSource
     @ValueSource(longs = {-1, 100_000_000_000L, 1})
-    void addProduct_Exception_InvalidPrice(Long invalidPrice) {
+    void addProduct_Exception_InvalidPrice(final Long invalidPrice) {
         //given
         Long brandId = 1L;
         String category = "TOP";
@@ -173,7 +173,7 @@ class ProductControllerTest extends ControllerTest {
     @ParameterizedTest
     @NullSource
     @ValueSource(longs = {-1, 100_000_000_000L, 1})
-    void editProduct_Exception_InvalidPrice(Long invalidPrice) {
+    void editProduct_Exception_InvalidPrice(final Long invalidPrice) {
         //given
         Long productId = 1L;
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(invalidPrice);

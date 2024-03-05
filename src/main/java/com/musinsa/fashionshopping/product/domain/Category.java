@@ -20,7 +20,7 @@ public enum Category {
         this.order = ordinal();
     }
 
-    public static Category from(String value) {
+    public static Category from(final String value) {
         for (Category type : Category.values()) {
             if (type.name().equalsIgnoreCase(value)) {
                 return type;

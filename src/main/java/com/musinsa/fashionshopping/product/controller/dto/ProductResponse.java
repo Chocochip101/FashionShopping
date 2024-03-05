@@ -21,14 +21,14 @@ public class ProductResponse {
     @JsonProperty("브랜드명")
     private String brandName;
 
-    public ProductResponse(Product product) {
+    public ProductResponse(final Product product) {
         this.id = product.getId();
         this.price = formatPrice(product.getProductPrice().getPrice());
         this.category = product.getCategory().getName();
         this.brandName = product.getBrand().getBrandName().getValue();
     }
 
-    private String formatPrice(Long price) {
+    private String formatPrice(final Long price) {
         return decimalFormat.format(price);
     }
 }

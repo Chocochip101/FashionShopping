@@ -8,8 +8,8 @@ import lombok.Getter;
 @Getter
 @Embeddable
 public class ProductPrice {
-    private static final long MAX_PRICE = 10_000_000_000L;
-    private static final int MIN_PRICE = 10;
+    public static final long MAX_PRICE = 10_000_000_000L;
+    public static final int MIN_PRICE = 0;
     private Long price;
 
     protected ProductPrice() {
@@ -21,8 +21,8 @@ public class ProductPrice {
         this.price = price;
     }
 
-    private void validate(Long price) {
-        if (price < MIN_PRICE || price > MAX_PRICE) {
+    private void validate(final Long price) {
+        if (price <= MIN_PRICE || price > MAX_PRICE) {
             throw new InvalidProductPriceException(price);
         }
     }

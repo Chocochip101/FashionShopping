@@ -52,8 +52,8 @@ class BrandRepositoryTest {
         brandRepository.save(brand);
 
         //when
-        final boolean nameDuplicated1 = brandRepository.existsBrandByBrandNameValue(name1);
-        final boolean nameDuplicated2 = brandRepository.existsBrandByBrandNameValue(name2);
+        boolean nameDuplicated1 = brandRepository.existsBrandByBrandNameValue(name1);
+        boolean nameDuplicated2 = brandRepository.existsBrandByBrandNameValue(name2);
 
         //then
         assertThat(nameDuplicated1).isTrue();

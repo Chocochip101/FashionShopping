@@ -84,7 +84,7 @@ class BrandServiceTest {
 
         //when
         brandService.createBrand(newBrandRequest);
-        final List<Brand> brands = brandRepository.findAll();
+        List<Brand> brands = brandRepository.findAll();
 
         //then
         assertThat(brands).isNotNull();
@@ -95,7 +95,7 @@ class BrandServiceTest {
     @DisplayName("숫자와 영문, 한글음절을 포함한 1자 이상 16자이하가 아닌 잘못된 형식의 브랜드 이름으로 등록할 시 예외 발생한다.")
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "ㄱㄴㄷ", "abdf123ㅏㅇ", "11112222333344445"})
-    void createBrandName_Exception_InvalidFormat(String invalidBrandName) {
+    void createBrandName_Exception_InvalidFormat(final String invalidBrandName) {
         //given
         NewBrandRequest newBrandRequest = new NewBrandRequest(invalidBrandName);
 
@@ -161,7 +161,7 @@ class BrandServiceTest {
     @Test
     void findMinPriceBrandCategory() {
         //given & when
-        final LowestPriceInfo response = brandService.getMinPriceCategoryAndTotal().getLowestPrice();
+        LowestPriceInfo response = brandService.getMinPriceCategoryAndTotal().getLowestPrice();
 
         //then
         assertThat(response.getBrand()).isEqualTo("B");

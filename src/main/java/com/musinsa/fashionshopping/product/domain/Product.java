@@ -45,15 +45,15 @@ public class Product extends BaseEntity {
         this.brand = brand;
     }
 
-    public void updateProductPrice(ProductPrice productPrice) {
+    public void updateProductPrice(final ProductPrice productPrice) {
         this.productPrice = productPrice;
     }
 
-    public void updateCategory(Category category) {
+    public void updateCategory(final Category category) {
         this.category = category;
     }
 
-    public void addBrand(Brand brand) {
+    public void addBrand(final Brand brand) {
         this.brand = brand;
         brand.getProducts().add(this);
     }
