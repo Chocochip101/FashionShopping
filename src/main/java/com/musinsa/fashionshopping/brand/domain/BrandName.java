@@ -11,8 +11,8 @@ import lombok.Getter;
 @Embeddable
 public class BrandName {
     private static final Pattern PATTERN = Pattern.compile("^[0-9a-zA-Z가-힣]+(?:\\s+[0-9a-zA-Z가-힣]+)*$");
-    private static final int MIN_LENGTH = 1;
-    private static final int MAX_LENGTH = 16;
+    public static final int MIN_LENGTH = 1;
+    public static final int MAX_LENGTH = 16;
 
     @Column(name = "brandname", unique = true)
     private String value;

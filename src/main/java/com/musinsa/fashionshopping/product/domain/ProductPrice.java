@@ -8,8 +8,8 @@ import lombok.Getter;
 @Getter
 @Embeddable
 public class ProductPrice {
-    private static final long MAX_PRICE = 10_000_000_000L;
-    private static final int MIN_PRICE = 0;
+    public static final long MAX_PRICE = 10_000_000_000L;
+    public static final int MIN_PRICE = 0;
     private Long price;
 
     protected ProductPrice() {
