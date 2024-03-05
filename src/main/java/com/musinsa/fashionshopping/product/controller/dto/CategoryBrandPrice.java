@@ -19,13 +19,13 @@ public class CategoryBrandPrice {
     @JsonProperty("가격")
     private String price;
 
-    public CategoryBrandPrice(CategoryMinPrice categoryMinPrice) {
+    public CategoryBrandPrice(final CategoryMinPrice categoryMinPrice) {
         this.category = categoryMinPrice.getCategory().getName();
         this.brandName = categoryMinPrice.getBrandName().getValue();
         this.price = formatPrice(categoryMinPrice.getPrice());
     }
 
-    private String formatPrice(Long price) {
+    private String formatPrice(final Long price) {
         return decimalFormat.format(price);
     }
 }

@@ -6,7 +6,7 @@ public class DuplicateBrandNameException extends BadRequestException {
 
     private static final String MESSAGE = "이미 존재하는 브랜드 이름입니다.";
 
-    public DuplicateBrandNameException(String failureValue) {
+    public DuplicateBrandNameException(final String failureValue) {
         super(MESSAGE, failureValue);
     }
 }

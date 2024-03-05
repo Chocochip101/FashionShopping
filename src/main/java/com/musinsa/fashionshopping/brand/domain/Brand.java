@@ -39,7 +39,7 @@ public class Brand extends BaseEntity {
         this.products = (products != null) ? products : new ArrayList<>();
     }
 
-    public void updateBrandName(BrandName brandName) {
+    public void updateBrandName(final BrandName brandName) {
         this.brandName = brandName;
     }
 

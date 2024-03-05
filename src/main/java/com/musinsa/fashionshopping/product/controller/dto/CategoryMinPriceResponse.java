@@ -17,12 +17,12 @@ public class CategoryMinPriceResponse {
     @JsonProperty("총액")
     private String totalPrice;
 
-    public CategoryMinPriceResponse(List<CategoryBrandPrice> categoryBrandPrices, Long totalPrice) {
+    public CategoryMinPriceResponse(final List<CategoryBrandPrice> categoryBrandPrices, final Long totalPrice) {
         this.categories = categoryBrandPrices;
         this.totalPrice = formatPrice(totalPrice);
     }
 
-    private String formatPrice(Long price) {
+    private String formatPrice(final Long price) {
         return decimalFormat.format(price);
     }
 }

@@ -6,11 +6,7 @@ public class ProductNotFoundException extends NotFoundException {
 
     private static final String MESSAGE = "상품이 존재하지 않습니다.";
 
-    public ProductNotFoundException(String failureValue) {
-        super(MESSAGE, failureValue);
-    }
-
-    public ProductNotFoundException(Long failureValue) {
+    public ProductNotFoundException(final Long failureValue) {
         super(MESSAGE, failureValue);
     }
 }

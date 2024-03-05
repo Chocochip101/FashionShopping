@@ -98,7 +98,7 @@ class BrandControllerTest extends ControllerTest {
     @Test
     void createBrand_Exception_Duplicated() {
         //given
-        final String duplicatedName = "nike";
+        String duplicatedName = "nike";
         NewBrandRequest newBrandRequest = new NewBrandRequest(duplicatedName);
 
         //when
@@ -167,7 +167,7 @@ class BrandControllerTest extends ControllerTest {
     @Test
     void editNickname_Exception_InvalidFormat() {
         //given
-        final String invalidName = " ";
+        String invalidName = " ";
         Long brandId = 1L;
         BrandNameUpdateRequest brandNameUpdateRequest = new BrandNameUpdateRequest(invalidName);
 

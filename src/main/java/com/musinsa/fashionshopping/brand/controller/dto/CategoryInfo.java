@@ -22,7 +22,7 @@ public class CategoryInfo {
         this.price = formatPrice(price);
     }
 
-    private String formatPrice(Long price) {
+    private String formatPrice(final Long price) {
         return decimalFormat.format(price);
     }
 }

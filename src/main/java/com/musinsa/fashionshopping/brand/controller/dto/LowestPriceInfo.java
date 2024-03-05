@@ -29,7 +29,7 @@ public class LowestPriceInfo {
         );
     }
 
-    private static String formatPrice(Long price) {
+    private static String formatPrice(final Long price) {
         return decimalFormat.format(price);
     }
 }
