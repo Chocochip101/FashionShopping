@@ -62,6 +62,10 @@ public class Product extends BaseEntity {
         this.brand.removeProduct(this);
     }
 
+    public String getBrandName() {
+        return this.brand.getBrandName().getValue();
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {

@@ -24,6 +24,6 @@ public class ProductResponse {
         this.id = product.getId();
         this.price = PriceFormatter.convert(product.getProductPrice().getPrice());
         this.category = product.getCategory().getName();
-        this.brandName = product.getBrand().getBrandName().getValue();
+        this.brandName = product.getBrandName();
     }
 }
