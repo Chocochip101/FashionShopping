@@ -448,8 +448,72 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_브랜드">1. 브랜드</a>
 <ul class="sectlevel2">
-<li><a href="#_브랜드_생성">1.1. 브랜드 생성</a></li>
-<li><a href="#_브랜드_변경">1.2. 브랜드 변경</a></li>
+<li><a href="#_브랜드_조회">1.1. 브랜드 조회</a>
+<ul class="sectlevel3">
+<li><a href="#_성공">1.1.1. 성공</a></li>
+</ul>
+</li>
+<li><a href="#_브랜드_생성">1.2. 브랜드 생성</a>
+<ul class="sectlevel3">
+<li><a href="#_성공_2">1.2.1. 성공</a></li>
+<li><a href="#_실패">1.2.2. 실패</a></li>
+</ul>
+</li>
+<li><a href="#_브랜드_변경">1.3. 브랜드 변경</a>
+<ul class="sectlevel3">
+<li><a href="#_성공_3">1.3.1. 성공</a></li>
+</ul>
+</li>
+<li><a href="#_브랜드_삭제">1.4. 브랜드 삭제</a>
+<ul class="sectlevel3">
+<li><a href="#_성공_4">1.4.1. 성공</a></li>
+<li><a href="#_실패_2">1.4.2. 실패</a></li>
+</ul>
+</li>
+<li><a href="#_조회">1.5. 조회</a>
+<ul class="sectlevel3">
+<li><a href="#_최저_가격인_단일_브랜드의_카테고리_상품_조회">1.5.1. 최저 가격인 단일 브랜드의 카테고리 상품 조회</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_상품">2. 상품</a>
+<ul class="sectlevel2">
+<li><a href="#_상품_조회">2.1. 상품 조회</a>
+<ul class="sectlevel3">
+<li><a href="#_성공_6">2.1.1. 성공</a></li>
+</ul>
+</li>
+<li><a href="#_상품_생성">2.2. 상품 생성</a>
+<ul class="sectlevel3">
+<li><a href="#_성공_7">2.2.1. 성공</a></li>
+<li><a href="#_실패_4">2.2.2. 실패</a></li>
+</ul>
+</li>
+<li><a href="#_가격_변경">2.3. 가격 변경</a>
+<ul class="sectlevel3">
+<li><a href="#_성공_8">2.3.1. 성공</a></li>
+<li><a href="#_실패_5">2.3.2. 실패</a></li>
+</ul>
+</li>
+<li><a href="#_카테고리_변경">2.4. 카테고리 변경</a>
+<ul class="sectlevel3">
+<li><a href="#_성공_9">2.4.1. 성공</a></li>
+<li><a href="#_실패_6">2.4.2. 실패</a></li>
+</ul>
+</li>
+<li><a href="#_상품_삭제">2.5. 상품 삭제</a>
+<ul class="sectlevel3">
+<li><a href="#_성공_10">2.5.1. 성공</a></li>
+<li><a href="#_실패_7">2.5.2. 실패</a></li>
+</ul>
+</li>
+<li><a href="#_조회_2">2.6. 조회</a>
+<ul class="sectlevel3">
+<li><a href="#_특정_카테고리_최저_최고가격_브랜드_조회">2.6.1. 특정 카테고리 최저, 최고가격 브랜드 조회</a></li>
+<li><a href="#_카테고리_별_최저_가격_브랜드_조회">2.6.2. 카테고리 별 최저 가격, 브랜드 조회</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -460,11 +524,43 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_브랜드"><a class="link" href="#_브랜드">1. 브랜드</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_브랜드_생성"><a class="link" href="#_브랜드_생성">1.1. 브랜드 생성</a></h3>
+<h3 id="_브랜드_조회"><a class="link" href="#_브랜드_조회">1.1. 브랜드 조회</a></h3>
 <div class="sect3">
 <h4 id="_성공"><a class="link" href="#_성공">1.1.1. 성공</a></h4>
 <div class="sect4">
 <h5 id="_성공_http_request"><a class="link" href="#_성공_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /brands HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_성공_http_response"><a class="link" href="#_성공_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 56
+
+[ {
+  "브랜드 ID" : null,
+  "브랜드명" : null
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_브랜드_생성"><a class="link" href="#_브랜드_생성">1.2. 브랜드 생성</a></h3>
+<div class="sect3">
+<h4 id="_성공_2"><a class="link" href="#_성공_2">1.2.1. 성공</a></h4>
+<div class="sect4">
+<h5 id="_성공_2_http_request"><a class="link" href="#_성공_2_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /brands HTTP/1.1
@@ -480,7 +576,7 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect4">
-<h5 id="_성공_http_response"><a class="link" href="#_성공_http_response">HTTP response</a></h5>
+<h5 id="_성공_2_http_response"><a class="link" href="#_성공_2_http_response">HTTP response</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created</code></pre>
@@ -489,7 +585,7 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패"><a class="link" href="#_실패">1.1.2. 실패</a></h4>
+<h4 id="_실패"><a class="link" href="#_실패">1.2.2. 실패</a></h4>
 <div class="sect4">
 <h5 id="_빈_입력일_경우"><a class="link" href="#_빈_입력일_경우">빈 입력일 경우</a></h5>
 <div class="sect5">
@@ -514,10 +610,11 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
 Content-Type: application/json
-Content-Length: 37
+Content-Length: 64
 
 {
-  "message" : "must not be blank"
+  "message" : "must not be blank",
+  "failureValue" : "name"
 }</code></pre>
 </div>
 </div>
@@ -547,19 +644,20 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
 Content-Type: application/json
-Content-Length: 53
+Content-Length: 146
 
 {
-  "message" : "잘못된 이름 형식입니다."
+  "message" : "브랜드 이름은 1자 이상, 16자 이하의 글자로 입력할 수 있습니다.",
+  "failureValue" : "11112222333344445"
 }</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_존재하는_이름일_경우"><a class="link" href="#_존재하는_이름일_경우">존재하는 이름일 경우</a></h5>
+<h5 id="_중복된_브랜드명일_경우"><a class="link" href="#_중복된_브랜드명일_경우">중복된 브랜드명일 경우</a></h5>
 <div class="sect5">
-<h6 id="_존재하는_이름일_경우_http_request"><a class="link" href="#_존재하는_이름일_경우_http_request">HTTP request</a></h6>
+<h6 id="_중복된_브랜드명일_경우_http_request"><a class="link" href="#_중복된_브랜드명일_경우_http_request">HTTP request</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /brands HTTP/1.1
@@ -575,15 +673,16 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect5">
-<h6 id="_존재하는_이름일_경우_http_response"><a class="link" href="#_존재하는_이름일_경우_http_response">HTTP response</a></h6>
+<h6 id="_중복된_브랜드명일_경우_http_response"><a class="link" href="#_중복된_브랜드명일_경우_http_response">HTTP response</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
 Content-Type: application/json
-Content-Length: 66
+Content-Length: 131
 
 {
-  "message" : "이미 존재하는 브랜드 이름입니다."
+  "message" : "이미 사용 중인 브랜드 이름입니다. 다른 이름을 입력해주세요.",
+  "failureValue" : "nike"
 }</code></pre>
 </div>
 </div>
@@ -592,31 +691,759 @@ Content-Length: 66
 </div>
 </div>
 <div class="sect2">
-<h3 id="_브랜드_변경"><a class="link" href="#_브랜드_변경">1.2. 브랜드 변경</a></h3>
+<h3 id="_브랜드_변경"><a class="link" href="#_브랜드_변경">1.3. 브랜드 변경</a></h3>
 <div class="sect3">
-<h4 id="_성공_2"><a class="link" href="#_성공_2">1.2.1. 성공</a></h4>
+<h4 id="_성공_3"><a class="link" href="#_성공_3">1.3.1. 성공</a></h4>
 <div class="sect4">
-<h5 id="_성공_2_http_request"><a class="link" href="#_성공_2_http_request">HTTP request</a></h5>
+<h5 id="_성공_3_http_request"><a class="link" href="#_성공_3_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /brands HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /brands/1 HTTP/1.1
 Content-Type: application/json
 Content-Type: application/json
-Content-Length: 36
+Content-Length: 24
 Host: localhost:8080
 
 {
-  "id" : 1,
   "name" : "musinsa"
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_성공_2_http_response"><a class="link" href="#_성공_2_http_response">HTTP response</a></h5>
+<h5 id="_성공_3_http_response"><a class="link" href="#_성공_3_http_response">HTTP response</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_중복된_브랜드명일_경우_2"><a class="link" href="#_중복된_브랜드명일_경우_2">중복된 브랜드명일 경우</a></h5>
+<div class="sect5">
+<h6 id="_중복된_브랜드명일_경우_2_http_request"><a class="link" href="#_중복된_브랜드명일_경우_2_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /brands/1 HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 24
+Host: localhost:8080
+
+{
+  "name" : "musinsa"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_중복된_브랜드명일_경우_2_http_response"><a class="link" href="#_중복된_브랜드명일_경우_2_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Content-Length: 134
+
+{
+  "message" : "이미 사용 중인 브랜드 이름입니다. 다른 이름을 입력해주세요.",
+  "failureValue" : "musinsa"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_빈_입력일_경우_2"><a class="link" href="#_빈_입력일_경우_2">빈 입력일 경우</a></h5>
+<div class="sect5">
+<h6 id="_빈_입력일_경우_2_http_request"><a class="link" href="#_빈_입력일_경우_2_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /brands/1 HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 18
+Host: localhost:8080
+
+{
+  "name" : " "
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_빈_입력일_경우_2_http_response"><a class="link" href="#_빈_입력일_경우_2_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Content-Length: 64
+
+{
+  "message" : "must not be blank",
+  "failureValue" : "name"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_브랜드_삭제"><a class="link" href="#_브랜드_삭제">1.4. 브랜드 삭제</a></h3>
+<div class="sect3">
+<h4 id="_성공_4"><a class="link" href="#_성공_4">1.4.1. 성공</a></h4>
+<div class="sect4">
+<h5 id="_성공_4_http_request"><a class="link" href="#_성공_4_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /brands/1 HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_성공_4_http_response"><a class="link" href="#_성공_4_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_실패_2"><a class="link" href="#_실패_2">1.4.2. 실패</a></h4>
+<div class="sect4">
+<h5 id="_존재하지_않을_브랜드일_경우"><a class="link" href="#_존재하지_않을_브랜드일_경우">존재하지 않을 브랜드일 경우</a></h5>
+<div class="sect5">
+<h6 id="_존재하지_않을_브랜드일_경우_http_request"><a class="link" href="#_존재하지_않을_브랜드일_경우_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /brands/4 HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_존재하지_않을_브랜드일_경우_http_response"><a class="link" href="#_존재하지_않을_브랜드일_경우_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+Content-Type: application/json
+Content-Length: 88
+
+{
+  "message" : "해당 브랜드를 찾을 수 없습니다.",
+  "failureValue" : "4"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_조회"><a class="link" href="#_조회">1.5. 조회</a></h3>
+<div class="sect3">
+<h4 id="_최저_가격인_단일_브랜드의_카테고리_상품_조회"><a class="link" href="#_최저_가격인_단일_브랜드의_카테고리_상품_조회">1.5.1. 최저 가격인 단일 브랜드의 카테고리 상품 조회</a></h4>
+<div class="sect4">
+<h5 id="_성공_5"><a class="link" href="#_성공_5">성공</a></h5>
+<div class="sect5">
+<h6 id="_성공_5_http_request"><a class="link" href="#_성공_5_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /brands/min-price-category HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_성공_5_http_response"><a class="link" href="#_성공_5_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 96
+
+{
+  "최저가" : {
+    "브랜드" : null,
+    "카테고리" : null,
+    "총액" : null
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_실패_3"><a class="link" href="#_실패_3">실패</a></h5>
+<div class="sect5">
+<h6 id="_상품_부족으로_최저_가격의_브랜드를_계산_불가"><a class="link" href="#_상품_부족으로_최저_가격의_브랜드를_계산_불가">상품 부족으로 최저 가격의 브랜드를 계산 불가</a></h6>
+<div class="sect6">
+<h7 id="_상품_부족으로_최저_가격의_브랜드를_계산_불가_http_request"><a class="link" href="#_상품_부족으로_최저_가격의_브랜드를_계산_불가_http_request">HTTP request</a></h7>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /brands/min-price-category HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect6">
+<h7 id="_상품_부족으로_최저_가격의_브랜드를_계산_불가_http_response"><a class="link" href="#_상품_부족으로_최저_가격의_브랜드를_계산_불가_http_response">HTTP response</a></h7>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Content-Length: 180
+
+{
+  "message" : "현재 상품 수량이 부족하여 최저 가격의 브랜드를 계산할 수 없습니다. 더 많은 상품을 추가해보세요.",
+  "failureValue" : null
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_상품"><a class="link" href="#_상품">2. 상품</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_상품_조회"><a class="link" href="#_상품_조회">2.1. 상품 조회</a></h3>
+<div class="sect3">
+<h4 id="_성공_6"><a class="link" href="#_성공_6">2.1.1. 성공</a></h4>
+<div class="sect4">
+<h5 id="_성공_6_http_request"><a class="link" href="#_성공_6_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /products HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_성공_6_http_response"><a class="link" href="#_성공_6_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 104
+
+[ {
+  "상품 ID" : null,
+  "상품 가격" : null,
+  "카테고리" : null,
+  "브랜드명" : null
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_상품_생성"><a class="link" href="#_상품_생성">2.2. 상품 생성</a></h3>
+<div class="sect3">
+<h4 id="_성공_7"><a class="link" href="#_성공_7">2.2.1. 성공</a></h4>
+<div class="sect4">
+<h5 id="_성공_7_http_request"><a class="link" href="#_성공_7_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /brands/1/products HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 43
+Host: localhost:8080
+
+{
+  "price" : 10000,
+  "category" : "TOP"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_성공_7_http_response"><a class="link" href="#_성공_7_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_실패_4"><a class="link" href="#_실패_4">2.2.2. 실패</a></h4>
+<div class="sect4">
+<h5 id="_존재하지_않을_브랜드일_경우_2"><a class="link" href="#_존재하지_않을_브랜드일_경우_2">존재하지 않을 브랜드일 경우</a></h5>
+<div class="sect5">
+<h6 id="_존재하지_않을_브랜드일_경우_2_http_request"><a class="link" href="#_존재하지_않을_브랜드일_경우_2_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /brands/3/products HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 43
+Host: localhost:8080
+
+{
+  "price" : 10000,
+  "category" : "TOP"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_존재하지_않을_브랜드일_경우_2_http_response"><a class="link" href="#_존재하지_않을_브랜드일_경우_2_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+Content-Type: application/json
+Content-Length: 88
+
+{
+  "message" : "해당 브랜드를 찾을 수 없습니다.",
+  "failureValue" : "3"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_존재하지_않을_카테고리일_경우"><a class="link" href="#_존재하지_않을_카테고리일_경우">존재하지 않을 카테고리일 경우</a></h5>
+<div class="sect5">
+<h6 id="_존재하지_않을_카테고리일_경우_http_request"><a class="link" href="#_존재하지_않을_카테고리일_경우_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /brands/1/products HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 46
+Host: localhost:8080
+
+{
+  "price" : 10000,
+  "category" : "MIDDLE"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_존재하지_않을_카테고리일_경우_http_response"><a class="link" href="#_존재하지_않을_카테고리일_경우_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+Content-Type: application/json
+Content-Length: 96
+
+{
+  "message" : "해당 카테고리를 찾을 수 없습니다.",
+  "failureValue" : "MIDDLE"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_빈_카테고리_입력일_경우"><a class="link" href="#_빈_카테고리_입력일_경우">빈 카테고리 입력일 경우</a></h5>
+<div class="sect5">
+<h6 id="_빈_카테고리_입력일_경우_http_request"><a class="link" href="#_빈_카테고리_입력일_경우_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /brands/1/products HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 42
+Host: localhost:8080
+
+{
+  "price" : 10000,
+  "category" : "  "
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_빈_카테고리_입력일_경우_http_response"><a class="link" href="#_빈_카테고리_입력일_경우_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Content-Length: 68
+
+{
+  "message" : "must not be blank",
+  "failureValue" : "category"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_부적절한_가격_형식일_경우"><a class="link" href="#_부적절한_가격_형식일_경우">부적절한 가격 형식일 경우</a></h5>
+<div class="sect5">
+<h6 id="_부적절한_가격_형식일_경우_http_request"><a class="link" href="#_부적절한_가격_형식일_경우_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /brands/1/products HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 39
+Host: localhost:8080
+
+{
+  "price" : 1,
+  "category" : "TOP"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_부적절한_가격_형식일_경우_http_response"><a class="link" href="#_부적절한_가격_형식일_경우_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Content-Length: 120
+
+{
+  "message" : "상품 가격은 0 초과, 10000000000 이하로 입력할 수 있습니다.",
+  "failureValue" : "1"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_가격_변경"><a class="link" href="#_가격_변경">2.3. 가격 변경</a></h3>
+<div class="sect3">
+<h4 id="_성공_8"><a class="link" href="#_성공_8">2.3.1. 성공</a></h4>
+<div class="sect4">
+<h5 id="_성공_8_http_request"><a class="link" href="#_성공_8_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /products/1/price HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 21
+Host: localhost:8080
+
+{
+  "price" : 10000
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_성공_8_http_response"><a class="link" href="#_성공_8_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_실패_5"><a class="link" href="#_실패_5">2.3.2. 실패</a></h4>
+<div class="sect4">
+<h5 id="_부적절한_가격_형식일_경우_2"><a class="link" href="#_부적절한_가격_형식일_경우_2">부적절한 가격 형식일 경우</a></h5>
+<div class="sect5">
+<h6 id="_부적절한_가격_형식일_경우_2_http_request"><a class="link" href="#_부적절한_가격_형식일_경우_2_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /products/1/price HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 17
+Host: localhost:8080
+
+{
+  "price" : 1
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_부적절한_가격_형식일_경우_2_http_response"><a class="link" href="#_부적절한_가격_형식일_경우_2_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Content-Length: 120
+
+{
+  "message" : "상품 가격은 0 초과, 10000000000 이하로 입력할 수 있습니다.",
+  "failureValue" : "1"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_상품이_존재하지_않을_경우"><a class="link" href="#_상품이_존재하지_않을_경우">상품이 존재하지 않을 경우</a></h5>
+<div class="sect5">
+<h6 id="_상품이_존재하지_않을_경우_http_request"><a class="link" href="#_상품이_존재하지_않을_경우_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /products/1/price HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 21
+Host: localhost:8080
+
+{
+  "price" : 10000
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_상품이_존재하지_않을_경우_http_response"><a class="link" href="#_상품이_존재하지_않을_경우_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+Content-Type: application/json
+Content-Length: 85
+
+{
+  "message" : "해당 상품을 찾을 수 없습니다.",
+  "failureValue" : "1"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_카테고리_변경"><a class="link" href="#_카테고리_변경">2.4. 카테고리 변경</a></h3>
+<div class="sect3">
+<h4 id="_성공_9"><a class="link" href="#_성공_9">2.4.1. 성공</a></h4>
+<div class="sect4">
+<h5 id="_성공_9_http_request"><a class="link" href="#_성공_9_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /products/1/category HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 24
+Host: localhost:8080
+
+{
+  "category" : "BAG"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_성공_9_http_response"><a class="link" href="#_성공_9_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_실패_6"><a class="link" href="#_실패_6">2.4.2. 실패</a></h4>
+<div class="sect4">
+<h5 id="_카테고리가_존재하지_않을_경우"><a class="link" href="#_카테고리가_존재하지_않을_경우">카테고리가 존재하지 않을 경우</a></h5>
+<div class="sect5">
+<h6 id="_카테고리가_존재하지_않을_경우_http_request"><a class="link" href="#_카테고리가_존재하지_않을_경우_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /products/5/category HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 25
+Host: localhost:8080
+
+{
+  "category" : "BAGG"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_카테고리가_존재하지_않을_경우_http_response"><a class="link" href="#_카테고리가_존재하지_않을_경우_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+Content-Type: application/json
+Content-Length: 94
+
+{
+  "message" : "해당 카테고리를 찾을 수 없습니다.",
+  "failureValue" : "BAGG"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_상품이_존재하지_않을_경우_2"><a class="link" href="#_상품이_존재하지_않을_경우_2">상품이 존재하지 않을 경우</a></h5>
+<div class="sect5">
+<h6 id="_상품이_존재하지_않을_경우_2_http_request"><a class="link" href="#_상품이_존재하지_않을_경우_2_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /products/5/category HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Content-Length: 24
+Host: localhost:8080
+
+{
+  "category" : "BAG"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_상품이_존재하지_않을_경우_2_http_response"><a class="link" href="#_상품이_존재하지_않을_경우_2_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+Content-Type: application/json
+Content-Length: 85
+
+{
+  "message" : "해당 상품을 찾을 수 없습니다.",
+  "failureValue" : "5"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_상품_삭제"><a class="link" href="#_상품_삭제">2.5. 상품 삭제</a></h3>
+<div class="sect3">
+<h4 id="_성공_10"><a class="link" href="#_성공_10">2.5.1. 성공</a></h4>
+<div class="sect4">
+<h5 id="_성공_10_http_request"><a class="link" href="#_성공_10_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /products/1 HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_성공_10_http_response"><a class="link" href="#_성공_10_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_실패_7"><a class="link" href="#_실패_7">2.5.2. 실패</a></h4>
+<div class="sect4">
+<h5 id="_상품이_존재하지_않을_경우_3"><a class="link" href="#_상품이_존재하지_않을_경우_3">상품이 존재하지 않을 경우</a></h5>
+<div class="sect5">
+<h6 id="_상품이_존재하지_않을_경우_3_http_request"><a class="link" href="#_상품이_존재하지_않을_경우_3_http_request">HTTP request</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /products/1 HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_상품이_존재하지_않을_경우_3_http_response"><a class="link" href="#_상품이_존재하지_않을_경우_3_http_response">HTTP response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+Content-Type: application/json
+Content-Length: 85
+
+{
+  "message" : "해당 상품을 찾을 수 없습니다.",
+  "failureValue" : "1"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_조회_2"><a class="link" href="#_조회_2">2.6. 조회</a></h3>
+<div class="sect3">
+<h4 id="_특정_카테고리_최저_최고가격_브랜드_조회"><a class="link" href="#_특정_카테고리_최저_최고가격_브랜드_조회">2.6.1. 특정 카테고리 최저, 최고가격 브랜드 조회</a></h4>
+<div class="sect4">
+<h5 id="_특정_카테고리_최저_최고가격_브랜드_조회_http_request"><a class="link" href="#_특정_카테고리_최저_최고가격_브랜드_조회_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /categories/price-brand?category=TOP HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_특정_카테고리_최저_최고가격_브랜드_조회_http_response"><a class="link" href="#_특정_카테고리_최저_최고가격_브랜드_조회_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 71
+
+{
+  "카테고리" : null,
+  "최저가" : null,
+  "최고가" : null
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_카테고리_별_최저_가격_브랜드_조회"><a class="link" href="#_카테고리_별_최저_가격_브랜드_조회">2.6.2. 카테고리 별 최저 가격, 브랜드 조회</a></h4>
+<div class="sect4">
+<h5 id="_카테고리_별_최저_가격_브랜드_조회_http_request"><a class="link" href="#_카테고리_별_최저_가격_브랜드_조회_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /categories/min-prices HTTP/1.1
+Content-Type: application/json
+Content-Type: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_카테고리_별_최저_가격_브랜드_조회_http_response"><a class="link" href="#_카테고리_별_최저_가격_브랜드_조회_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 46
+
+{
+  "카테고리" : null,
+  "총액" : null
+}</code></pre>
 </div>
 </div>
 </div>
@@ -628,7 +1455,7 @@ Host: localhost:8080
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-02-29 14:04:32 +0900
+Last updated 2024-03-05 20:47:24 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
