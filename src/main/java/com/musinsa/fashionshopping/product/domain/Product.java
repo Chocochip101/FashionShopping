@@ -55,11 +55,15 @@ public class Product extends BaseEntity {
 
     public void addBrand(final Brand brand) {
         this.brand = brand;
-        brand.getProducts().add(this);
+        brand.addProduct(this);
     }
 
     public void deleteBrand() {
-        this.brand.getProducts().remove(this);
+        this.brand.removeProduct(this);
+    }
+
+    public String getBrandName() {
+        return this.brand.getBrandName().getValue();
     }
 
     @Override

@@ -89,7 +89,7 @@ class BrandServiceTest {
         //then
         assertThat(brands).isNotNull();
         assertThat(brands.size()).isEqualTo(brandSize + 1);
-        assertThat(brands.get(brandSize).getBrandName().getValue()).isEqualTo(brandName);
+        assertThat(brands.get(brandSize).getBrandName()).isEqualTo(brandName);
     }
 
     @DisplayName("숫자와 영문, 한글음절을 포함한 1자 이상 16자이하가 아닌 잘못된 형식의 브랜드 이름으로 등록할 시 예외 발생한다.")
@@ -118,7 +118,7 @@ class BrandServiceTest {
                 .isInstanceOf(DuplicateBrandNameException.class);
     }
 
-    @DisplayName("닉네임 수정에 성공한다.")
+    @DisplayName("브랜드명 수정에 성공한다.")
     @Test
     void editBrandName() {
         //given

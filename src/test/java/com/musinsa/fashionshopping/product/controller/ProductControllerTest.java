@@ -1,17 +1,24 @@
 package com.musinsa.fashionshopping.product.controller;
 
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
 import com.musinsa.fashionshopping.ControllerTest;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryMinPriceResponse;
+import com.musinsa.fashionshopping.product.controller.dto.CategoryPriceResponse;
 import com.musinsa.fashionshopping.product.controller.dto.CategoryUpdateRequest;
 import com.musinsa.fashionshopping.product.controller.dto.NewProductRequest;
 import com.musinsa.fashionshopping.product.controller.dto.PriceUpdateRequest;
+import com.musinsa.fashionshopping.product.controller.dto.ProductResponse;
 import com.musinsa.fashionshopping.product.exception.CategoryNotFoundException;
 import com.musinsa.fashionshopping.product.exception.InvalidProductPriceException;
 import com.musinsa.fashionshopping.product.exception.ProductNotFoundException;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,12 +31,23 @@ class ProductControllerTest extends ControllerTest {
     @DisplayName("상품 조회 시 200을 반환한다.")
     @Test
     void findProducts() {
-        //given & when & then
+        //given
+        doReturn(List.of(new ProductResponse()))
+                .when(productService)
+                .findProducts();
+
+        //when & then
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/products")
                 .then().log().all()
-                .apply(document("products/find/success"))
+                .apply(document("products/find/success",
+                        responseFields(
+                                fieldWithPath("[].상품 ID").description("상품의 식별자"),
+                                fieldWithPath("[].상품 가격").description("상품의 가격"),
+                                fieldWithPath("[].카테고리").description("해당 상품이 속한 카테고리"),
+                                fieldWithPath("[].브랜드명").description("해당 상품이 속한 브랜드명")
+                        )))
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -121,7 +139,7 @@ class ProductControllerTest extends ControllerTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
-    @DisplayName("상품 생성 요청에 빈 가격에 대해 400을 반환한다.")
+    @DisplayName("상품 생성 요청에 부적적한 가격형식에 대해 400을 반환한다.")
     @ParameterizedTest
     @NullSource
     @ValueSource(longs = {-1, 100_000_000_000L, 1})
@@ -328,26 +346,45 @@ class ProductControllerTest extends ControllerTest {
     @DisplayName("특정 카테고리 최저, 최고가격 브랜드 확인 시 200을 반환한다.")
     @Test
     void findPriceBrandByCategory() {
-        //given & when & then
+        //given
+        doReturn(new CategoryPriceResponse())
+                .when(productService)
+                .getPriceBrandByCategory("TOP");
+
+        //when & then
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/categories/price-brand?category=TOP")
                 .then().log().all()
                 .assertThat()
-                .apply(document("products/find/success/categoriesBrandPrice"))
+                .apply(document("products/find/success/categoriesBrandPrice",
+                        responseFields(
+                                fieldWithPath("카테고리").description("카테고리"),
+                                fieldWithPath("최저가").description("카테고리에 속한 최저가 상품"),
+                                fieldWithPath("최고가").description("카테고리에 속한 최고가 상품")
+                        )))
                 .statusCode(HttpStatus.OK.value());
     }
 
     @DisplayName("카테고리 별 최저 가격, 브랜드 조회 시 200을 반환한다.")
     @Test
     void findCategoryMinPrices() {
-        //given & when & then
+        //given
+        doReturn(new CategoryMinPriceResponse())
+                .when(productService)
+                .getCategoriesMinPrice();
+
+        //when & then
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/categories/min-prices")
                 .then().log().all()
                 .assertThat()
-                .apply(document("products/find/success/categoriesMinPrices"))
+                .apply(document("products/find/success/categoriesMinPrices",
+                        responseFields(
+                                fieldWithPath("카테고리").description("카테고리별 최저 가격의 상품들"),
+                                fieldWithPath("총액").description("카테고리명")
+                        )))
                 .statusCode(HttpStatus.OK.value());
     }
 }

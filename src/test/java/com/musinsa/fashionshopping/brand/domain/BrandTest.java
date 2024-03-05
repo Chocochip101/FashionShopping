@@ -21,6 +21,6 @@ class BrandTest {
 
         //then
         assertThat(nike.getId()).isEqualTo(id);
-        assertThat(nike.getBrandName().getValue()).isEqualTo(name);
+        assertThat(nike.getBrandName()).isEqualTo(name);
     }
 }
