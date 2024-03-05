@@ -1,16 +1,23 @@
 package com.musinsa.fashionshopping.brand.controller;
 
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
 import com.musinsa.fashionshopping.ControllerTest;
+import com.musinsa.fashionshopping.brand.controller.dto.BrandMinPriceResponse;
 import com.musinsa.fashionshopping.brand.controller.dto.BrandNameUpdateRequest;
+import com.musinsa.fashionshopping.brand.controller.dto.BrandResponse;
+import com.musinsa.fashionshopping.brand.controller.dto.LowestPriceInfo;
 import com.musinsa.fashionshopping.brand.controller.dto.NewBrandRequest;
 import com.musinsa.fashionshopping.brand.exception.BrandNotFoundException;
 import com.musinsa.fashionshopping.brand.exception.DuplicateBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.InvalidBrandNameException;
 import com.musinsa.fashionshopping.brand.exception.ProductInsufficientException;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,12 +30,21 @@ class BrandControllerTest extends ControllerTest {
     @DisplayName("브랜드를 조회하면 200을 반환한다.")
     @Test
     void findBrands() {
-        //given & when & then
+        //given
+        doReturn(List.of(new BrandResponse()))
+                .when(brandService)
+                .findBrands();
+
+        //when & then
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/brands")
                 .then().log().all()
-                .apply(document("brands/find/success"))
+                .apply(document("brands/find/success",
+                        responseFields(
+                                fieldWithPath("[].브랜드 ID").description("브랜드의 식별자"),
+                                fieldWithPath("[].브랜드명").description("브랜드명")
+                        )))
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -116,7 +132,7 @@ class BrandControllerTest extends ControllerTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
-    @DisplayName("닉네임 변경 시 204 반환한다.")
+    @DisplayName("브랜드명 변경 시 204 반환한다.")
     @Test
     void editBrandName() {
         //given
@@ -139,9 +155,9 @@ class BrandControllerTest extends ControllerTest {
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    @DisplayName("중복된 닉네임에 대해 400 반환한다.")
+    @DisplayName("중복된 브랜드명에 대해 400 반환한다.")
     @Test
-    void editNickname_Exception_Duplicate() {
+    void editBrandName_Exception_Duplicate() {
         //given
         String duplicatedName = "musinsa";
         Long brandId = 1L;
@@ -163,9 +179,9 @@ class BrandControllerTest extends ControllerTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
-    @DisplayName("닉네임 변경 시 잘못된 형식이면 400 반환한다.")
+    @DisplayName("브랜드명 변경 시 잘못된 형식이면 400 반환한다.")
     @Test
-    void editNickname_Exception_InvalidFormat() {
+    void editBrandName_Exception_InvalidFormat() {
         //given
         String invalidName = " ";
         Long brandId = 1L;
@@ -232,13 +248,24 @@ class BrandControllerTest extends ControllerTest {
     @DisplayName("최저 가격인 단일 브랜드의 카테고리 상품 조회 시 200을 반환한다.")
     @Test
     void findMinPriceBrandCategory() {
-        //given & when & then
+        //given
+        doReturn(new BrandMinPriceResponse(new LowestPriceInfo()))
+                .when(brandService)
+                .getMinPriceCategoryAndTotal();
+
+        //when & then
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/brands/min-price-category")
                 .then().log().all()
                 .assertThat()
-                .apply(document("brands/find/success/minPrice"))
+                .apply(document("brands/find/success/minPrice",
+                        responseFields(
+                                fieldWithPath("최저가").description("최저가 브랜드가 속한 데이터 집합"),
+                                fieldWithPath("최저가.브랜드").description("최저가 브랜드명"),
+                                fieldWithPath("최저가.카테고리").description("최저가 브랜드의 상품들"),
+                                fieldWithPath("최저가.총액").description("최저가 브랜드의 총액")
+                        )))
                 .statusCode(HttpStatus.OK.value());
     }
 

@@ -118,7 +118,7 @@ class BrandServiceTest {
                 .isInstanceOf(DuplicateBrandNameException.class);
     }
 
-    @DisplayName("닉네임 수정에 성공한다.")
+    @DisplayName("브랜드명 수정에 성공한다.")
     @Test
     void editBrandName() {
         //given
