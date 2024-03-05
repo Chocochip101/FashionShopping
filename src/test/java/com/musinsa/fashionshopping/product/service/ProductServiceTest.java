@@ -157,7 +157,7 @@ class ProductServiceTest {
 
     @DisplayName("범위에 벗어난 가격으로 상품 가격 수정 시 예외가 발생한다.")
     @ParameterizedTest
-    @ValueSource(longs = {-1, 100_000_000_000L})
+    @ValueSource(longs = {-1, 100_000_000_000L, 0})
     void editProductPrice_Exception_InvalidPrice(final Long invalidPrice) {
         //given
         PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest(invalidPrice);
