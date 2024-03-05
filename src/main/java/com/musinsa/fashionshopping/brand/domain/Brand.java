@@ -32,6 +32,14 @@ public class Brand extends BaseEntity {
     @OneToMany(mappedBy = "brand", cascade = CascadeType.REMOVE)
     private List<Product> products = new ArrayList<>();
 
+    public void addProduct(final Product product) {
+        this.products.add(product);
+    }
+
+    public void removeProduct(final Product product) {
+        this.products.remove(product);
+    }
+
     @Builder
     public Brand(final Long id, final BrandName brandName, final List<Product> products) {
         this.id = id;
