@@ -11,12 +11,12 @@ class BrandTest {
     void createBrand() {
         //given
         Long id = 1L;
-        String name = "nike";
+        BrandName name = new BrandName("nike");
 
         //when
         Brand nike = Brand.builder()
                 .id(id)
-                .brandName(new BrandName(name))
+                .brandName(name)
                 .build();
 
         //then
