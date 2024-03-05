@@ -1,7 +1,7 @@
 package com.musinsa.fashionshopping.product.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.text.DecimalFormat;
+import com.musinsa.fashionshopping.global.PriceFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BrandPrice {
-    private static final DecimalFormat decimalFormat = new DecimalFormat("#,###");
     @JsonProperty("브랜드")
     private String brandName;
     @JsonProperty("가격")
@@ -18,11 +17,6 @@ public class BrandPrice {
 
     public BrandPrice(final String brandName, final Long price) {
         this.brandName = brandName;
-        this.price = formatPrice(price);
+        this.price = PriceFormatter.convert(price);
     }
-
-    private String formatPrice(final Long price) {
-        return decimalFormat.format(price);
-    }
-
 }

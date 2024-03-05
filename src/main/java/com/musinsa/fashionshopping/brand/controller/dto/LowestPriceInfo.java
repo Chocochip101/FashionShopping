@@ -2,7 +2,7 @@ package com.musinsa.fashionshopping.brand.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.musinsa.fashionshopping.brand.repository.dto.MinBrandPrice;
-import java.text.DecimalFormat;
+import com.musinsa.fashionshopping.global.PriceFormatter;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LowestPriceInfo {
-    private static final DecimalFormat decimalFormat = new DecimalFormat("#,###");
     @JsonProperty("브랜드")
     private String brand;
     @JsonProperty("카테고리")
@@ -25,11 +24,7 @@ public class LowestPriceInfo {
         return new LowestPriceInfo(
                 minBrandPrice.getBrandName(),
                 categoryInfos,
-                formatPrice(minBrandPrice.getTotalPrice())
+                PriceFormatter.convert(minBrandPrice.getTotalPrice())
         );
-    }
-
-    private static String formatPrice(final Long price) {
-        return decimalFormat.format(price);
     }
 }
