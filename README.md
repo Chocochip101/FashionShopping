@@ -134,9 +134,13 @@ java -jar build/libs/FashionShopping-0.0.1-SNAPSHOT.jar
 ### DB
 - **H2 Database**
 
-
 ### Test
 - **JUnit 5**
 - **RestAssured**
 - **Mockito**
 - **Jacoco** 
+
+### Web
+- **Html**
+- **css**
+- **JavaScript**
